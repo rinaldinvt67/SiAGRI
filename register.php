@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="Assets/style.css">
+    <link rel="stylesheet" href="Assets/css/style.css"> 
 </head>
 
 <body>
     <div class="wrapper">
-        <form action="" method="post" class="form-step2">
+        <form action="auth.php" method="POST" class="form-step2">
             <h1>Create Account</h1>
+            <input type="hidden" name="action" value="register">
             <div class="input-box">
                 <input type="text" placeholder="Username" required>
             </div>
@@ -37,7 +38,7 @@
             <button type="submit" class="btn">Register</button>
                 <input type="radio" name="step" id="step1" checked hidden>
                 <input type="radio" name="step" id="step2" hidden>
-            <button for="step1" class="btn back-btn" href="Login page.html">Back</button>
+            <button type="" for="step1" class="btn back-btn" href="login-page.php">Back</button>
             </form>
             
     </div>

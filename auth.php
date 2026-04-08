@@ -46,7 +46,7 @@ if (isset($_POST['action'])) {
                 VALUES ('$username', '$email', '$hashedPassword')";
 
         if (mysqli_query($conn, $sql)) {
-            echo "Register berhasil! <br><a href='Login page.html'>Login</a>";
+            echo "Register berhasil! <br><a href='login-page.php'>Login</a>";
         } else {
             echo "Error: " . mysqli_error($conn);
         }

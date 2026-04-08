@@ -2,6 +2,6 @@
 session_start();
 session_destroy();
 
-header("Location: Login page.html");
+header("Location: login-page.html");
 exit;
 ?>
