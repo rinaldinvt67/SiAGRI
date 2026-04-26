@@ -7,15 +7,39 @@
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #164a41;
+    background: #4d774e;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Lapisan Foto Background */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Masukkan link foto kamu di sini */
+    background-image: url('../images/sawah.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Atur Opacity di sini (0.1 pudar sekali, 0.9 jelas sekali) */
+    opacity: 0.3; 
+    
+    /* Supaya foto berada di bawah form */
+    z-index: -1; 
 }
 
 .wrapper {
     width: 420px;
-    background: #4d774e;
+    background: #164a41;
     padding: 30px 20px;
     border-radius: 30px;
     color:#fff
@@ -115,39 +139,6 @@ body {
     text-decoration: underline;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;
-    /* Ganti background solid menjadi warna dasar (untuk jaga-jaga foto gagal load) */
-    background-color: #164a41; 
-    position: relative; /* Penting! */
-    overflow-x: hidden;
-}
-
-/* Lapisan Foto Background */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Masukkan link foto kamu di sini */
-    background-image: url('Assets/images/Lush Rice Paddies At Sunset Mountain View Backgrounds _ JPG Free Download - Pikbest.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    
-    /* Atur Opacity di sini (0.1 pudar sekali, 0.9 jelas sekali) */
-    opacity: 0.3; 
-    
-    /* Supaya foto berada di bawah form */
-    z-index: -1; 
-}
-
 .terms-outside {
     margin-top: 15px;
     font-size: 12px;
@@ -230,6 +221,7 @@ body::before {
     color: #333;
     font-weight: 600;
     margin-top: 10px;
+    transition: background-color 0.2s;
 }
 
 .btn:hover{
@@ -238,7 +230,8 @@ body::before {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+select {
     width: 100%;
     padding: 12px 15px;
     margin-bottom: 25px;
@@ -248,7 +241,7 @@ input[type="password"] {
     transition: border-color 0.2s;
 }
 
-input:focus {
+input:focus, select:focus {
     outline: none;
     border-color: #f1b24a; /* Border color on focus */
 }

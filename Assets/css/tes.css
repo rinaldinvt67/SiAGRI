@@ -1,0 +1,94 @@
+/* =========================================
+   PONDASI UTAMA (RESET & VARIABLES)
+   ========================================= */
+:root {
+    /* Color Palette SiAGRI */
+    --primary: #2e7d32;       /* Hijau Utama */
+    --primary-hover: #1b5e20; /* Hijau Gelap untuk hover tombol */
+    --bg-light: #f4f7f6;      /* Warna background web (Abu-abu sangat muda) */
+    --text-dark: #333333;     /* Teks utama (Bukan hitam pekat agar mata tidak lelah) */
+    --text-muted: #666666;    /* Teks sekunder/penjelasan */
+    --white: #ffffff;
+    --danger: #d32f2f;        /* Merah untuk error/hapus */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* =========================================
+   NAVBAR (MENU ATAS STANDAR)
+   ========================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Bayangan halus di bawah menu */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+    color: var(--primary);
+}
+
+/* =========================================
+   TOMBOL (BUTTON STANDAR)
+   ========================================= */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: var(--white) !important;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px); /* Efek tombol terangkat saat di-hover */
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary) !important;
+    border: 2px solid var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary);
+    color: var(--white) !important;
+}
