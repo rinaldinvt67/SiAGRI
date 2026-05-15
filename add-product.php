@@ -63,7 +63,7 @@ $products = mysqli_query($conn, "SELECT * FROM products");
             </div>
 
             <button type="submit" name="add_product" class="btn">Add to Catalog</button>
-            <a href="kiosk_dashboard.php" class="btn" style="background:#666;">Cancel</a>
+            <a href="dashboard.php" class="btn"  style="text-decoration: none">Cancel</a>
         </form>
     </div>
 </body>

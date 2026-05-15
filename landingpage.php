@@ -1,13 +1,3 @@
-<?php
-session_start();
-require_once 'koneksi.php'; // Ganti jadi config.php kalau kamu sudah me-rename filenya
-
-// 1. Keamanan Lapis Ganda: Hanya Kiosk yang boleh masuk
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Farmer') {
-    header("Location: login-page.php");
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +31,6 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 12px 30px;
-    /* background: rgb(8, 125, 16); */
     background: #164a41;
     border-bottom: 1px solid #eee;
 }
@@ -131,9 +120,9 @@ body {
     text-align: center;
     color: white;
 
-    background:
+    background-image:
         linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-        url("C:\\Users\\jocel\\Downloads\\beautiful-strawberry-garden-sunrise-doi-ang-khang-chiang-mai-thailand.jpg");
+        url('../images/sawah.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -286,7 +275,7 @@ body {
     </div>
 
     <ul class="nav-links">
-        <li><a href="#">Home</a></li>
+        <li><a href="landingpage.php">Home</a></li>
         <li><a href="#">Marketplace</a></li>
         <li><a href="#">Forum</a></li>
     </ul>
@@ -315,7 +304,7 @@ body {
         <div class="card">
             <div class="card-img">
                 <span class="badge">Popular</span>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLFeiqVq0bkRfa282Z8KcUqioRgYieZ7jiWw&s">
+                <img src="Assets/images/Urea-Petro.jpg">
             </div>
             <div class="card-content">
                 <div class="card-title">Organic Fertilizer Premium</div>
@@ -387,7 +376,7 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
-    <p>© 2026 SiAGRI - Agriculture Platform</p>
+    <p>© 2026 SiAGRI - All rights reserved.</p>
 </footer>
 
 </body>

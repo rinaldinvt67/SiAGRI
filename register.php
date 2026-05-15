@@ -59,12 +59,12 @@ if (isset($_POST['register'])) {
     <link rel="stylesheet" href="Assets/css/style.css">
     <style>
     .kelas-dropdown {
-    background-color: transparent; /* Atau ganti dengan kode warna hijau gelap yang kamu pakai, misal: #4A7A59 */
+    background-color: transparent;
     color: white; /* Mengubah warna teks menjadi putih */
     border: 1px solid white; /* Menambahkan garis pinggir putih */
     border-radius: 8px; /* Membuat sudutnya melengkung (Sesuaikan angkanya dengan kolom inputmu) */
     padding: 10px 15px; /* Memberikan ruang lega di dalam kotak */
-    width: 100%; /* Agar lebarnya sama panjang dengan input di atas dan bawahnya */
+    width: 100%;
     font-size: 16px;
     font-family: inherit; /* Mengikuti jenis huruf web kamu */
     cursor: pointer;
@@ -87,13 +87,14 @@ if (isset($_POST['register'])) {
     <div class="wrapper">
         <form action="" method="POST" class="form-step2">
             <h1>Create Account</h1>
-            <!-- <input type="hidden" name="action" value="register"> -->
-            <div class="input-box">
-                <input type="text" name="username" placeholder="Username" required>
+            <div class="input-group">
+                <input type="text" id="username" name="username" placeholder=" " required>
+                <label for="username">Username</label>
             </div>
     
-            <div class="input-box">
-                <input type="email" name="email" placeholder="Email" required>
+            <div class="input-group">
+                <input type="email" id="email" name="email" placeholder=" " required>
+                <label for="email">Email</label>
             </div>
 
             <div>
@@ -103,11 +104,13 @@ if (isset($_POST['register'])) {
                     <option value="Kiosk">Mitra Kios</option>
                 </select>
             </div>
-            <div class="input-box">
-                <input type="password" name="password" placeholder="Password" required>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder=" " required>
+                <label for="password">Password</label>
             </div>
-            <div class="input-box">
-                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            <div class="input-group">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required>
+                <label for="confirm_password">Confirm Password</label>
             </div>
     
             <div class="terms-check">
