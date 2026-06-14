@@ -2,99 +2,219 @@
 session_start();
 require_once 'koneksi.php';
 
-// 1. KEAMANAN: Cek apakah user sudah login. Kalau belum, tendang balik ke login!
 if (!isset($_SESSION['username'])) {
     header("Location: login-page.php");
     exit;
 }
 
-// 2. AMBIL DATA DARI DATABASE (Menggabungkan 3 tabel sekaligus!)
-$sql_catalog = "SELECT 
-                    kc.actual_selling_price, kc.stock_status,
-                    p.product_name, p.category, p.retail_ceiling_price, p.product_image,
-                    kp.store_name, kp.whatsapp_number 
-                FROM kiosk_catalogs kc
-                JOIN products p ON kc.product_id = p.product_id
-                JOIN kiosk_profiles kp ON kc.kiosk_id = kp.kiosk_id";
+$role    = $_SESSION['role'];
+$user_id = $_SESSION['user_id'];
 
-$result = mysqli_query($conn, $sql_catalog);
-?>
+// ─── LAZY CHECK: batalkan pesanan expired ────────────────────────────────────
+$now = date('Y-m-d H:i:s');
+$expired_orders = mysqli_query($conn,
+    "SELECT o.order_id, oi.product_id, oi.quantity
+     FROM orders o
+     JOIN order_items oi ON o.order_id = oi.order_id
+     WHERE o.status = 'pending' AND o.expired_at < '$now'"
+);
+while ($exp = mysqli_fetch_assoc($expired_orders)) {
+    mysqli_query($conn,
+        "UPDATE products SET stock = stock + {$exp['quantity']}
+         WHERE product_id = {$exp['product_id']}"
+    );
+}
+mysqli_query($conn,
+    "UPDATE orders SET status='cancelled'
+     WHERE status='pending' AND expired_at < '$now'"
+);
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Saprotan | SiAGRI</title>
-    <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; background: #2E7D32; color: white; padding: 15px 30px; border-radius: 8px; margin-bottom: 20px; }
-        .header a { color: white; text-decoration: none; font-weight: bold; background: #1b5e20; padding: 8px 15px; border-radius: 5px; }
-        .grid-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: white; border-radius: 10px; padding: 20px; width: 250px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .badge-kategori { background: #e8f5e9; color: #2e7d32; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .harga { font-size: 20px; font-weight: bold; color: #333; margin: 10px 0; }
-        .het-aman { background: #4CAF50; color: white; padding: 5px; text-align: center; border-radius: 5px; font-size: 13px; margin-bottom: 10px;}
-        .het-bahaya { background: #F44336; color: white; padding: 5px; text-align: center; border-radius: 5px; font-size: 13px; margin-bottom: 10px;}
-        .btn-wa { display: block; background: #25D366; color: white; text-align: center; padding: 10px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 15px;}
-    </style>
-</head>
-<body>
+// ─── KIOSK: TAMBAH PRODUK ────────────────────────────────────────────────────
+if ($role === 'Kiosk' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
-    <div class="header">
-        <div>
-            <h2 style="margin: 0;">🌾 SiAGRI Katalog</h2>
-            <p style="margin: 5px 0 0 0; font-size: 14px;">Selamat datang, <b><?php echo $_SESSION['username']; ?></b> (<?php echo $_SESSION['role']; ?>)</p>
-        </div>
-        <a href="logout.php">Keluar (Logout)</a>
-    </div>
+    $kiosk_id = $_SESSION['kiosk_id'];
 
-    <h3 style="text-align: center; color: #333;">Pupuk & Alat Tani Tersedia</h3>
+    // Cek KYC dulu sebelum boleh tambah produk
+    $kyc = mysqli_fetch_assoc(mysqli_query($conn,
+        "SELECT kyc_status FROM kiosk_profiles WHERE kiosk_id = $kiosk_id"
+    ));
 
-    <div class="grid-container">
-        <?php 
-        // Mengecek apakah ada barang yang dijual
-        if (mysqli_num_rows($result) > 0) {
-            // Jika ada barang, tampilkan dalam bentuk kartu (Card)
-            while ($row = mysqli_fetch_assoc($result)) { 
-        ?>
-                <div class="card">
-                    <span class="badge-kategori"><?php echo $row['category']; ?></span>
-                    <h3 style="margin-top: 15px; margin-bottom: 5px;"><?php echo $row['product_name']; ?></h3>
-                    <p style="margin: 0; color: #666; font-size: 14px;">Toko: <b><?php echo $row['store_name']; ?></b></p>
-                    
-                    <p class="harga">Rp <?php echo number_format($row['actual_selling_price'], 0, ',', '.'); ?></p>
-                    
-                    <?php if ($row['retail_ceiling_price'] != null && $row['retail_ceiling_price'] > 0) { 
-                        if ($row['actual_selling_price'] > $row['retail_ceiling_price']) {
-                            echo "<div class='het-bahaya'>🔴 Melanggar HET (Maks. Rp ".number_format($row['retail_ceiling_price'], 0, ',', '.').")</div>";
-                        } else {
-                            echo "<div class='het-aman'>🟢 Harga Aman sesuai HET</div>";
-                        }
-                    } ?>
+    if ($kyc['kyc_status'] !== 'verified') {
+        $kiosk_error = "Akun kamu belum terverifikasi (KYC). Upload dokumen legalitas terlebih dahulu.";
+    } else {
 
-                    <p style="margin: 0; font-size: 14px;">Status: 
-                        <b style="color: <?php echo ($row['stock_status'] == 'Available') ? '#2e7d32' : '#d32f2f'; ?>;">
-                            <?php echo ($row['stock_status'] == 'Available') ? 'Tersedia' : 'Stok Habis'; ?>
-                        </b>
-                    </p>
-                    
-                    <?php 
-                        // Menyusun kata-kata otomatis untuk WhatsApp
-                        $wa_message = "Halo " . $row['store_name'] . ", saya ingin membeli " . $row['product_name'] . " dari aplikasi SiAGRI. Apakah stoknya masih ada?";
-                        // Membuat link WhatsApp
-                        $wa_link = "https://wa.me/" . $row['whatsapp_number'] . "?text=" . urlencode($wa_message);
-                    ?>
-                    <a href="<?php echo $wa_link; ?>" target="_blank" class="btn-wa">💬 Chat Penjual</a>
-                </div>
-        <?php 
-            } // Penutup While
-        } else {
-            // Jika database kosong
-            echo "<p style='text-align: center; color: #666; width: 100%;'>Belum ada produk yang dijual oleh Mitra Kios saat ini.</p>";
+        if ($_POST['action'] === 'add_product') {
+            $name        = mysqli_real_escape_string($conn, trim($_POST['product_name']));
+            $category_id = (int)$_POST['category_id'];
+            $price       = (float)$_POST['selling_price'];
+            $stock       = (int)$_POST['stock'];
+            $subsidized  = $_POST['is_subsidized'];
+            $het         = (float)($_POST['het_price'] ?? 0);
+            $desc        = mysqli_real_escape_string($conn, trim($_POST['description'] ?? ''));
+
+            // Upload gambar produk
+            $image_path = null;
+            if (!empty($_FILES['product_image']['name'])) {
+                $upload_dir = 'Assets/uploads/products/';
+                if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+                $ext        = pathinfo($_FILES['product_image']['name'], PATHINFO_EXTENSION);
+                $filename   = 'prod_' . time() . '_' . rand(100,999) . '.' . $ext;
+                $allowed    = ['jpg','jpeg','png','webp'];
+                if (in_array(strtolower($ext), $allowed)) {
+                    move_uploaded_file($_FILES['product_image']['tmp_name'], $upload_dir . $filename);
+                    $image_path = $upload_dir . $filename;
+                }
+            }
+
+            if (empty($name) || $price <= 0) {
+                $kiosk_error = "Nama produk dan harga wajib diisi!";
+            } else {
+                $img_val = $image_path ? "'$image_path'" : "NULL";
+                mysqli_query($conn,
+                    "INSERT INTO products
+                        (kiosk_id, category_id, product_name, description,
+                         product_image, selling_price, stock, is_subsidized, het_price)
+                     VALUES
+                        ($kiosk_id, $category_id, '$name', '$desc',
+                         $img_val, $price, $stock, '$subsidized', $het)"
+                );
+                $kiosk_success = "Produk berhasil ditambahkan!";
+            }
         }
-        ?>
-    </div>
 
-</body>
-</html>
+        if ($_POST['action'] === 'delete_product') {
+            $prod_id = (int)$_POST['product_id'];
+            mysqli_query($conn,
+                "DELETE FROM products
+                 WHERE product_id = $prod_id AND kiosk_id = $kiosk_id"
+            );
+            $kiosk_success = "Produk berhasil dihapus.";
+        }
+
+        if ($_POST['action'] === 'edit_product') {
+            $prod_id = (int)$_POST['product_id'];
+            $price   = (float)$_POST['selling_price'];
+            $stock   = (int)$_POST['stock'];
+            $het     = (float)($_POST['het_price'] ?? 0);
+            mysqli_query($conn,
+                "UPDATE products
+                 SET selling_price=$price, stock=$stock, het_price=$het
+                 WHERE product_id=$prod_id AND kiosk_id=$kiosk_id"
+            );
+            $kiosk_success = "Produk berhasil diupdate!";
+        }
+    }
+}
+
+// ─── FARMER: TAMBAH KE CART ──────────────────────────────────────────────────
+if ($role === 'Farmer' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+
+    if ($_POST['action'] === 'add_to_cart') {
+        $product_id = (int)$_POST['product_id'];
+        $qty        = max(1, (int)($_POST['quantity'] ?? 1));
+
+        // Cek stok
+        $prod = mysqli_fetch_assoc(mysqli_query($conn,
+            "SELECT stock FROM products WHERE product_id = $product_id"
+        ));
+
+        if (!$prod || $prod['stock'] < $qty) {
+            $cart_error = "Stok tidak mencukupi!";
+        } else {
+            // Upsert cart — kalau sudah ada tambah qty, kalau belum insert baru
+            $existing = mysqli_fetch_assoc(mysqli_query($conn,
+                "SELECT cart_id, quantity FROM cart
+                 WHERE user_id=$user_id AND product_id=$product_id"
+            ));
+            if ($existing) {
+                $new_qty = $existing['quantity'] + $qty;
+                mysqli_query($conn,
+                    "UPDATE cart SET quantity=$new_qty
+                     WHERE cart_id={$existing['cart_id']}"
+                );
+            } else {
+                mysqli_query($conn,
+                    "INSERT INTO cart (user_id, product_id, quantity)
+                     VALUES ($user_id, $product_id, $qty)"
+                );
+            }
+            $cart_success = "Produk ditambahkan ke keranjang!";
+        }
+    }
+
+    if ($_POST['action'] === 'remove_from_cart') {
+        $cart_id = (int)$_POST['cart_id'];
+        mysqli_query($conn,
+            "DELETE FROM cart WHERE cart_id=$cart_id AND user_id=$user_id"
+        );
+    }
+}
+
+// ─── AMBIL DATA KATALOG ───────────────────────────────────────────────────────
+$filter_cat = isset($_GET['cat']) ? (int)$_GET['cat'] : 0;
+$search     = isset($_GET['q'])   ? mysqli_real_escape_string($conn, trim($_GET['q'])) : '';
+
+$where = "WHERE p.stock > 0";
+if ($filter_cat) $where .= " AND p.category_id = $filter_cat";
+if ($search)     $where .= " AND p.product_name LIKE '%$search%'";
+
+// Farmer hanya lihat produk dari kios verified
+if ($role === 'Farmer') {
+    $where .= " AND kp.kyc_status = 'verified'";
+}
+
+$sql = "SELECT p.*, c.category_name, kp.store_name, kp.whatsapp_number,
+               kp.kyc_status, kp.kiosk_id
+        FROM products p
+        JOIN categories c      ON p.category_id = c.category_id
+        JOIN kiosk_profiles kp ON p.kiosk_id    = kp.kiosk_id
+        $where
+        ORDER BY p.created_at DESC";
+$products = mysqli_query($conn, $sql);
+
+// Ambil semua kategori untuk filter
+$categories = mysqli_query($conn, "SELECT * FROM categories ORDER BY category_name");
+
+// Kiosk: ambil produk milik sendiri
+if ($role === 'Kiosk') {
+    $kiosk_id    = $_SESSION['kiosk_id'];
+    $my_products = mysqli_query($conn,
+        "SELECT p.*, c.category_name
+         FROM products p
+         JOIN categories c ON p.category_id = c.category_id
+         WHERE p.kiosk_id = $kiosk_id
+         ORDER BY p.created_at DESC"
+    );
+    $all_categories = mysqli_query($conn, "SELECT * FROM categories ORDER BY category_name");
+
+    // Cek KYC status kios ini
+    $kiosk_info = mysqli_fetch_assoc(mysqli_query($conn,
+        "SELECT kyc_status, kyc_note FROM kiosk_profiles WHERE kiosk_id = $kiosk_id"
+    ));
+
+    // Hitung pesanan pending
+    $pesanan_pending = mysqli_fetch_assoc(mysqli_query($conn,
+        "SELECT COUNT(*) as total FROM orders
+         WHERE kiosk_id = $kiosk_id AND status = 'pending'"
+    ))['total'] ?? 0;
+}
+
+// Farmer: hitung item di cart
+$cart_count = 0;
+if ($role === 'Farmer') {
+    $cc = mysqli_fetch_assoc(mysqli_query($conn,
+        "SELECT SUM(quantity) as total FROM cart WHERE user_id=$user_id"
+    ));
+    $cart_count = $cc['total'] ?? 0;
+
+    // Ambil isi cart
+    $cart_items = mysqli_query($conn,
+        "SELECT c.*, p.product_name, p.selling_price, p.stock,
+                kp.store_name, p.product_image
+         FROM cart c
+         JOIN products p        ON c.product_id = p.product_id
+         JOIN kiosk_profiles kp ON p.kiosk_id   = kp.kiosk_id
+         WHERE c.user_id = $user_id"
+    );
+}
+?>
