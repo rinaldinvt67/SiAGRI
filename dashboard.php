@@ -2,49 +2,105 @@
 session_start();
 require_once 'koneksi.php';
 
-// 1. Security Check: Ensure user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login-page.php");
     exit;
 }
 
-// 2. Role Protection: Ensure only Kiosk can access this
 if ($_SESSION['role'] !== 'Kiosk') {
-    header("Location: catalog.php"); // Send Farmers back to catalog
+    header("Location: catalog.php");
     exit;
 }
+
+$kiosk_id = $_SESSION['kiosk_id'];
+
+// Lazy check: batalkan pesanan expired
+$now = date('Y-m-d H:i:s');
+$expired = mysqli_query($conn,
+    "SELECT o.order_id, oi.product_id, oi.quantity
+     FROM orders o
+     JOIN order_items oi ON o.order_id = oi.order_id
+     WHERE o.status = 'pending' AND o.expired_at < '$now'
+     AND o.kiosk_id = $kiosk_id"
+);
+if ($expired) {
+    while ($exp = mysqli_fetch_assoc($expired)) {
+        mysqli_query($conn,
+            "UPDATE products SET stock = stock + {$exp['quantity']}
+             WHERE product_id = {$exp['product_id']}"
+        );
+    }
+    mysqli_query($conn,
+        "UPDATE orders SET status = 'cancelled'
+         WHERE status = 'pending' AND expired_at < '$now'
+         AND kiosk_id = $kiosk_id"
+    );
+}
+
+// Ambil info kiosk
+$kiosk_info = mysqli_fetch_assoc(mysqli_query($conn,
+    "SELECT * FROM kiosk_profiles WHERE kiosk_id = $kiosk_id"
+));
+
+// Statistik
+$total_produk = mysqli_fetch_assoc(mysqli_query($conn,
+    "SELECT COUNT(*) as total FROM products WHERE kiosk_id = $kiosk_id"
+))['total'] ?? 0;
+
+$pesanan_pending = mysqli_fetch_assoc(mysqli_query($conn,
+    "SELECT COUNT(*) as total FROM orders
+     WHERE kiosk_id = $kiosk_id AND status = 'pending'"
+))['total'] ?? 0;
+
+$pesanan_confirmed = mysqli_fetch_assoc(mysqli_query($conn,
+    "SELECT COUNT(*) as total FROM orders
+     WHERE kiosk_id = $kiosk_id AND status = 'confirmed'"
+))['total'] ?? 0;
+
+$pesanan_selesai = mysqli_fetch_assoc(mysqli_query($conn,
+    "SELECT COUNT(*) as total FROM orders
+     WHERE kiosk_id = $kiosk_id AND status = 'completed'"
+))['total'] ?? 0;
+
+// KYC status config
+$kyc_config = [
+    'unverified' => [
+        'color' => 'blue',
+        'icon'  => 'ℹ️',
+        'label' => 'Belum Upload Dokumen',
+        'desc'  => 'Upload dokumen legalitas untuk mulai berjualan di SiAGRI.',
+        'show_btn' => true,
+    ],
+    'pending' => [
+        'color' => 'yellow',
+        'icon'  => '⏳',
+        'label' => 'Sedang Ditinjau Admin',
+        'desc'  => 'Dokumenmu sedang ditinjau. Harap tunggu 1x24 jam.',
+        'show_btn' => false,
+    ],
+    'verified' => [
+        'color' => 'green',
+        'icon'  => '✅',
+        'label' => 'Kios Resmi Terverifikasi',
+        'desc'  => 'Akunmu sudah terverifikasi. Kamu bisa mulai berjualan!',
+        'show_btn' => false,
+    ],
+    'rejected' => [
+        'color' => 'red',
+        'icon'  => '❌',
+        'label' => 'Dokumen Ditolak',
+        'desc'  => 'Alasan: ' . htmlspecialchars($kiosk_info['kyc_note'] ?? '-') . '. Silakan upload ulang.',
+        'show_btn' => true,
+    ],
+];
+$kyc_status = $kiosk_info['kyc_status'] ?? 'unverified';
+$kyc = $kyc_config[$kyc_status];
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiosk Dashboard | SiAGRI</title>
-    <link rel="stylesheet" href="Assets/css/style.css">
-    <style>
-        .dashboard-container { padding: 20px; font-family: sans-serif; }
-        .nav-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .btn-action { display: inline-block; padding: 10px 20px; background: #2e7d32; color: #fff; text-decoration: none; border-radius: 5px; margin-right: 10px; }
-    </style>
+    <?php $page_title = 'Dashboard Kios'; include 'component/layout/head.php'; ?>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen">
 
-<div class="dashboard-container">
-    <h1>Welcome, Store Manager! 👋</h1>
-    <p>Logged in as: <strong><?php echo $_SESSION['username']; ?></strong></p>
-
-    <div class="nav-card">
-        <h3>Quick Actions</h3>
-        <a href="add-product.php" class="btn-action">+ Add New Product</a>
-        <a href="manage-catalog.php" class="btn-action">Manage My Catalog</a>
-        <a href="edit-profile.php" class="btn-action">Edit Store Profile</a>
-    </div>
-
-    <div class="nav-card">
-        <a href="logout.php" style="color: red;">Logout</a>
-    </div>
-</div>
-
-</body>
-</html>
+<?php $current_page = 'dashboard'; include 'component/layout/navbar.php'; ?>
