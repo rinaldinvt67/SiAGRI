@@ -91,6 +91,43 @@ function role_badge($role) {
             <?php endif; ?>
         </div>
 
+                <?php if ($current_page === 'catalog'): ?>
+        <!-- Search bar (desktop) -->
+        <form method="GET" class="hidden md:flex items-center bg-white/10 rounded-full px-4 py-2 w-48 lg:w-72 xl:w-96 gap-2">
+            <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input type="text" name="q" value="<?= htmlspecialchars($search ?? '') ?>"
+                   placeholder="Cari produk..."
+                   class="bg-transparent text-white placeholder-white/60 outline-none text-sm flex-1">
+            <?php if (isset($filter_cat) && $filter_cat): ?>
+                <input type="hidden" name="cat" value="<?= $filter_cat ?>">
+            <?php endif; ?>
+        </form>
+        <?php endif; ?>
+
+        <!-- Right Section: User + Cart + Logout -->
+        <div class="flex items-center gap-4">
+            <?php if ($is_logged_in): ?>
+                <?php if ($role === 'Farmer' && $current_page === 'catalog' && $cart_count > 0): ?>
+                <!-- Cart Button -->
+                <button onclick="toggleCart()" class="relative bg-siagri-gold text-siagri-dark p-2 rounded-full hover:bg-yellow-400 transition">
+                    <!-- Icon SVG Cart -->
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"><?= $cart_count ?></span>
+                </button>
+                <?php endif; ?>
+                <?= role_badge($role) ?>
+                <a href="logout.php" class="text-white/70 hover:text-white text-sm transition hidden md:block">Logout</a>
+            <?php endif; ?>
+
+            <!-- Mobile Hamburger -->
+            <button onclick="toggleMobileNav()" class="md:hidden text-white p-1.5 rounded-lg hover:bg-white/10 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
     </div>
 </nav>
         
