@@ -1,15 +1,15 @@
 <?php
 /**
- * footer.php — Komponen Footer SiAGRI
+ * footer.php — Komponen Footer modular SiAGRI
  * 
  * Cara pakai:
- * <?php include 'component/layout/footer.php'; ?>
+ * <?php include 'komponen/layout/footer.php'; ?>
  * 
- * Catatan: TIDAK termasuk </body></html> — halaman pemanggil harus menutup sendiri.
+ * TIDAK termasuk </body></html> — halaman pemanggil harus menutup sendiri.
  */
 ?>
 
-<footer class="bg-siagri-dark text-white pt-16 pb-8 relative mt-16">
+<footer class="bg-siagri-dark text-white pt-16 pb-8 relative">
     <!-- Aksen garis emas di atas -->
     <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-siagri-gold/0 via-siagri-gold to-siagri-gold/0"></div>
 
@@ -60,43 +60,3 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Bottom bar -->
-        <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p class="text-white/30 text-sm">
-                &copy; 2026 SiAGRI — All rights reserved
-            </p>
-            <div class="flex items-center gap-4">
-                <span class="text-white/30 text-xs">Kelompok 11</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scroll to top -->
-    <button onclick="window.scrollTo({top:0, behavior:'smooth'})"
-            class="fixed bottom-6 right-6 bg-siagri-dark border border-white/20 text-white/60
-                   hover:text-white hover:bg-siagri-green rounded-full w-10 h-10
-                   flex items-center justify-center shadow-lg transition-all duration-300 z-50
-                   opacity-0 translate-y-4 pointer-events-none"
-            id="scroll-top-btn">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
-        </svg>
-    </button>
-
-    <script>
-    // Show/hide scroll-to-top button
-    const scrollBtn = document.getElementById('scroll-top-btn');
-    if (scrollBtn) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
-                scrollBtn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-                scrollBtn.classList.add('opacity-100', 'translate-y-0');
-            } else {
-                scrollBtn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-                scrollBtn.classList.remove('opacity-100', 'translate-y-0');
-            }
-        });
-    }
-    </script>
-</footer>
