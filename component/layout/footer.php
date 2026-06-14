@@ -60,3 +60,26 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Bottom bar -->
+        <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-white/30 text-sm">
+                &copy; 2026 SiAGRI — All rights reserved
+            </p>
+            <div class="flex items-center gap-4">
+                <span class="text-white/30 text-xs">Kelompok 11</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to top -->
+    <button onclick="window.scrollTo({top:0, behavior:'smooth'})"
+            class="fixed bottom-6 right-6 bg-siagri-dark border border-white/20 text-white/60
+                   hover:text-white hover:bg-siagri-green rounded-full w-10 h-10
+                   flex items-center justify-center shadow-lg transition-all duration-300 z-50
+                   opacity-0 translate-y-4 pointer-events-none"
+            id="scroll-top-btn">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
