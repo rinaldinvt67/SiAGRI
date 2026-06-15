@@ -1,0 +1,13 @@
+/* Global style */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+/* Scrollbar Custom */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #4d774e; border-radius: 10px; }
+/* Utility Global */
+.btn-lift   { transition: transform .2s; }
+.btn-lift:hover { transform: translateY(-2px); }
+.card-hover { transition: box-shadow .2s, transform .2s; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,.08); }
