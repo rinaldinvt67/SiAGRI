@@ -441,3 +441,10 @@ body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     color: var(--siagri-gold);
     line-height: 1;
 }
+/* --- Modal (admin-dashboard.php & manage-catalog.php) --- */
+.modal {
+    display: none;
+}
+.modal.open {
+    display: flex;
+}
