@@ -1,4 +1,5 @@
 <?php
+$path_prefix = '';
 session_start();
 require_once 'koneksi.php';
 $error_message = "";
@@ -43,7 +44,8 @@ if (isset($_POST['login'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="Assets/css/style.css">    
+    <link rel="stylesheet" href="Assets/css/style.css">
+    <link rel="icon" type="image/png" href="<?= $path_prefix ?>assets/images/ICON.png"> 
 </head>
 
 <body>

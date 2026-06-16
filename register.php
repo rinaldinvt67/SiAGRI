@@ -1,4 +1,5 @@
 <?php
+$path_prefix = '';
 session_start();
 // Pakai require_once sesuai pertanyaanmu biar lebih aman
 require_once 'koneksi.php'; 
@@ -57,6 +58,7 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="Assets/css/style.css">
+    <link rel="icon" type="image/png" href="<?= $path_prefix ?>assets/images/ICON.png">
     <style>
     .kelas-dropdown {
     background-color: transparent;
