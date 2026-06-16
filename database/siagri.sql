@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `siagri`
+-- Database: `siagri_tes`
 --
 
 -- --------------------------------------------------------
@@ -73,6 +73,13 @@ CREATE TABLE `expert_profiles` (
   `expert_photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `expert_profiles`
+--
+
+INSERT INTO `expert_profiles` (`expert_id`, `user_id`, `full_name`, `specialization`, `whatsapp_number`, `expert_photo`) VALUES
+(1, 4, 'Andi Santoso', 'Spesialis Hama & Penyakit Tanaman', '0123456789', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -123,7 +130,7 @@ CREATE TABLE `kiosk_profiles` (
 --
 
 INSERT INTO `kiosk_profiles` (`kiosk_id`, `user_id`, `store_name`, `full_address`, `whatsapp_number`, `kyc_status`, `kyc_doc_path`, `kyc_note`, `verified_at`) VALUES
-(1, 2, 'Unnamed Store', '-', '-', 'unverified', NULL, NULL, NULL);
+(1, 2, 'Kios Surya Tani', 'Jl. Pertanian No. 45, Kota Lumbung', '08123456789', 'unverified', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -135,7 +142,7 @@ CREATE TABLE `orders` (
   `order_id` int NOT NULL,
   `user_id` int NOT NULL,
   `kiosk_id` int NOT NULL,
-  `total_price` decimal(10,2) NOT NULL,
+  `total_price` decimal(15,2) NOT NULL,
   `status` enum('pending','confirmed','completed','cancelled') DEFAULT 'pending',
   `expired_at` datetime NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
@@ -152,7 +159,7 @@ CREATE TABLE `order_items` (
   `order_id` int NOT NULL,
   `product_id` int NOT NULL,
   `quantity` int NOT NULL DEFAULT '1',
-  `price` decimal(10,2) NOT NULL
+  `price` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -168,10 +175,10 @@ CREATE TABLE `products` (
   `product_name` varchar(150) NOT NULL,
   `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `product_image` varchar(255) DEFAULT NULL,
-  `selling_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `selling_price` decimal(15,2) NOT NULL DEFAULT '0.00',
   `stock` int NOT NULL DEFAULT '0',
   `is_subsidized` enum('Yes','No') DEFAULT 'No',
-  `het_price` decimal(10,2) DEFAULT '0.00',
+  `het_price` decimal(15,2) DEFAULT '0.00',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -194,9 +201,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `role`) VALUES
-(1, 'aldi', 'tes@gmail.com', '$2y$10$nOi.dXSZ3HsW83Pz7AjpEuEOAujYs7pAPcShRCRw20Wp6IR.XZed2', 'Farmer'),
-(2, 'arkan', 'tes1@gmail.com', '$2y$10$nOi.dXSZ3HsW83Pz7AjpEuEOAujYs7pAPcShRCRw20Wp6IR.XZed2', 'Kiosk'),
-(3, 'admin', 'admin@siagri.com', '$2y$10$nOi.dXSZ3HsW83Pz7AjpEuEOAujYs7pAPcShRCRw20Wp6IR.XZed2', 'Admin');
+(1, 'admin', 'admin@siagri.com', '$2y$10$azdFg2NQHGcHeeFrWycSSucWqlqSWmLaQC1XsIDNP.BRzH5Vjv./K', 'Admin'),
+(2, 'kiosk', 'kiosk@siagri.com', '$2y$10$W/TvIupMwPi8qmJ/tufEuuHA4FN3hZ4uWeFAfq1vWirq1lrkJoqY2', 'Kiosk'),
+(3, 'farmer', 'farmer@siagri.com', '$2y$10$lz9zPYz6q3uDyHtiTcq9mOexxzcEkXqeTauYcWAgH28K/oexkhU5m', 'Farmer'),
+(4, 'expert', 'expert@siagri.com', '$2y$10$p8TRIY1xPLVnOLxHq2Dgxe2JrIXIpW/E4ddqxWfclhbbVURve4kzW', 'Expert');
 
 --
 -- Indexes for dumped tables
@@ -297,13 +305,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `expert_profiles`
 --
 ALTER TABLE `expert_profiles`
-  MODIFY `expert_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `expert_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `farmer_profiles`
 --
 ALTER TABLE `farmer_profiles`
-  MODIFY `farmer_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `farmer_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `forum_discussions`
@@ -339,7 +347,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
