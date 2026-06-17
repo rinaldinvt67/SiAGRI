@@ -1,45 +1,151 @@
-/* Global style */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+:root {
+    /* Color Palette SiAGRI */
+    --siagri-dark: #164a41;
+    --siagri-green: #4d774e;
+    --siagri-gold: #f1b24a;
+    --siagri-light: #f0f7f4;
+    --siagri-slate: #2d3748;
+    --siagri-muted: #718096;
+    --siagri-border: #e2e8f0;
+    --siagri-surface: #ffffff;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    background-color: var(--siagri-light);
+    color: var(--siagri-slate);
+    line-height: 1.6;
+}
+/* Sembunyikan default password reveal bawaan browser IE/Edge */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none !important;
+}
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f0f7f4;
+}
+::-webkit-scrollbar-thumb {
+    background: #4d774e;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #164a41;
+}
 
-/* Scrollbar Custom */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: #4d774e; border-radius: 10px; }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-12px); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
 
-/* Utility Global */
-.btn-lift   { transition: transform .2s; }
-.btn-lift:hover { transform: translateY(-2px); }
-.card-hover { transition: box-shadow .2s, transform .2s; }
-.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,.08); }
+.fade-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+.float-anim {
+    animation: float 4s ease-in-out infinite;
+}
+.btn-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(22, 74, 65, 0.25);
+}
+.btn-lift:active {
+    transform: translateY(0);
+}
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(22, 74, 65, 0.12);
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 
-/* Auth Pages (login-page, register, forgotPassword) */
-.login-bg, .register-bg {
-    background-image: url('assets/images/sawah.jpg');
-    background-size: cover; background-position: center;
+/* --- Modal (admin-dashboard.php & manage-catalog.php) --- */
+.modal {
+    display: none;
 }
-.login-card {
-    background: rgba(255,255,255,.15);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,.3);
-    border-radius: 1.5rem;
+.modal.open {
+    display: flex;
 }
-.float-group { position: relative; }
-.float-group input:focus + label,
-.float-group input:not(:placeholder-shown) + label {
-    transform: translateY(-1.4rem) scale(.8); color: #4d774e;
+/* --- Cart Drawer Panel (catalog.php & product-detail.php) --- */
+.cart-panel {
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
 }
-.float-group label {
-    position: absolute; top: .75rem; left: .75rem;
-    transition: all .2s; pointer-events: none; color: #9ca3af;
+.cart-panel.open {
+    transform: translateX(0);
 }
-.forgot-btn-back {
-    display: inline-flex; align-items: center; gap: .5rem;
-    color: #4d774e; font-weight: 600; text-decoration: none; transition: color .2s;
+.overlay {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
 }
-.forgot-btn-back:hover { color: #164a41; }
-
+.overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+/* --- Landing Page (index.php) --- */
+.hero-bg {
+    background-image:
+        linear-gradient(to bottom, rgba(22,74,65,0.82), rgba(22,74,65,0.65)),
+        url(../images/sawah.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.fade-in-1 { animation: fadeInUp 0.7s ease forwards; }
+.fade-in-2 { animation: fadeInUp 0.7s ease 0.2s forwards; opacity: 0; }
+.fade-in-3 { animation: fadeInUp 0.7s ease 0.4s forwards; opacity: 0; }
+.fade-in-4 { animation: fadeInUp 0.7s ease 0.6s forwards; opacity: 0; }
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(22,74,65,0.15);
+}
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--siagri-gold);
+    line-height: 1;
+}
+/* --- Halaman Autentikasi (login-page.php, register.php, forgotPassword.php) --- */
 .auth-body {
     min-height: 100vh;
     display: flex;
@@ -390,61 +496,11 @@ body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     .register-title,
     .forgot-title { font-size: 24px; }
 }
-/* --- Profile Page (profile.php) --- */
+/* --- C. Profile Page (profile.php) --- */
 .tab-btn {
     transition: all 0.2s;
 }
 .tab-btn.active {
     background: var(--siagri-dark);
     color: white;
-}
-
-.cart-panel {
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-}
-.cart-panel.open {
-    transform: translateX(0);
-}
-.overlay {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
-.overlay.open {
-    opacity: 1;
-    pointer-events: all;
-}
-/* index.php */
-.hero-bg {
-    background-image:
-        linear-gradient(to bottom, rgba(22,74,65,0.82), rgba(22,74,65,0.65)),
-        url(../images/sawah.jpg);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-.fade-in-1 { animation: fadeInUp 0.7s ease forwards; }
-.fade-in-2 { animation: fadeInUp 0.7s ease 0.2s forwards; opacity: 0; }
-.fade-in-3 { animation: fadeInUp 0.7s ease 0.4s forwards; opacity: 0; }
-.fade-in-4 { animation: fadeInUp 0.7s ease 0.6s forwards; opacity: 0; }
-.feature-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(22,74,65,0.15);
-}
-.stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--siagri-gold);
-    line-height: 1;
-}
-/* --- Modal (admin-dashboard.php & manage-catalog.php) --- */
-.modal {
-    display: none;
-}
-.modal.open {
-    display: flex;
 }

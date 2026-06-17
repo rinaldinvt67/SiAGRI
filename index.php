@@ -45,20 +45,10 @@ if (isset($_SESSION['username'])) {
 </head>
 <body class="bg-siagri-light text-gray-800 overflow-x-hidden">
 
-<?php $current_page = 'index'; include 'komponen/layout/navbar.php'; ?>
+<?php $current_page = 'index'; include 'component/layout/navbar.php'; ?>
 
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- HERO SECTION                                                -->
-<!-- ═══════════════════════════════════════════════════════════ -->
 <section class="hero-bg min-h-screen flex items-center justify-center pt-16">
     <div class="max-w-4xl mx-auto px-5 text-center text-white">
-
-        <!-- Badge -->
-        <!-- <div class="fade-in-1 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm
-                    border border-white/20 rounded-full px-4 py-2 text-sm mb-6">
-            <span class="w-2 h-2 bg-siagri-gold rounded-full animate-pulse"></span>
-            Platform Agrikultur Terpercaya di Mataram
-        </div> -->
 
         <h1 class="fade-in-2 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6">
             Pertanian Lebih Mudah<br>
@@ -92,3 +82,195 @@ if (isset($_SESSION['username'])) {
         </div>
     </div>
 </section>
+
+<section class="bg-siagri-dark py-12">
+    <div class="max-w-5xl mx-auto px-5 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+        <div>
+            <div class="stat-number">500+</div>
+            <p class="text-white/60 text-sm mt-1">Petani Terdaftar</p>
+        </div>
+        <div>
+            <div class="stat-number">80+</div>
+            <p class="text-white/60 text-sm mt-1">Mitra Kios</p>
+        </div>
+        <div>
+            <div class="stat-number">1.200+</div>
+            <p class="text-white/60 text-sm mt-1">Produk Tersedia</p>
+        </div>
+        <div>
+            <div class="stat-number">5K+</div>
+            <p class="text-white/60 text-sm mt-1">Transaksi Sukses</p>
+        </div>
+    </div>
+</section>
+
+<section id="fitur" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-5">
+
+        <div class="text-center mb-14">
+            <span class="text-siagri-green text-sm font-semibold uppercase tracking-widest">Kenapa SiAGRI?</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-siagri-dark mt-2">
+                Platform yang Dirancang untuk Petani
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Fitur 1 -->
+            <div class="feature-card bg-siagri-light rounded-2xl p-8 border border-green-100">
+                <div class="w-14 h-14 bg-siagri-dark rounded-2xl flex items-center justify-center mb-5">
+                    <span class="text-2xl">✅</span>
+                </div>
+                <h3 class="font-bold text-siagri-dark text-lg mb-3">Kios Terverifikasi (KYC)</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Setiap Mitra Kios wajib mengunggah dokumen legalitas (NIB/SIUP/SPJB).
+                    Admin memverifikasi manual, belanja hanya dari kios resmi berlisensi.
+                </p>
+                <div class="mt-4 inline-flex items-center gap-1 text-siagri-green text-xs font-semibold">
+                    <span class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                    Badge "Kios Resmi" di katalog
+                </div>
+            </div>
+
+            <!-- Fitur 2 -->
+            <div class="feature-card bg-siagri-light rounded-2xl p-8 border border-green-100">
+                <div class="w-14 h-14 bg-siagri-dark rounded-2xl flex items-center justify-center mb-5">
+                    <span class="text-2xl">🛒</span>
+                </div>
+                <h3 class="font-bold text-siagri-dark text-lg mb-3">Klik & Ambil</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Pesan produk secara online, stok langsung terkunci 24 jam.
+                    Datang ke kios, bayar kontan, dan bawa pulang barangnya.
+                    Mudah, aman, tanpa ribet.
+                </p>
+                <div class="mt-4 inline-flex items-center gap-1 text-siagri-green text-xs font-semibold">
+                    <span class="text-siagri-gold"></span>
+                    Timer otomatis 24 jam
+                </div>
+            </div>
+
+            <!-- Fitur 3 -->
+            <div class="feature-card bg-siagri-light rounded-2xl p-8 border border-green-100">
+                <div class="w-14 h-14 bg-siagri-dark rounded-2xl flex items-center justify-center mb-5">
+                    <span class="text-2xl">💰</span>
+                </div>
+                <h3 class="font-bold text-siagri-dark text-lg mb-3">Transparansi HET</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Harga Eceran Tertinggi (HET) pupuk subsidi ditampilkan jelas.
+                    Label hijau jika harga aman, label merah jika melanggar HET.
+                    Petani terlindungi dari harga tidak wajar.
+                </p>
+                <div class="mt-4 inline-flex items-center gap-1 text-siagri-green text-xs font-semibold">
+                    <span class="text-green-500"></span>
+                    Indikator harga real-time
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="cara-kerja" class="py-20 bg-siagri-light">
+    <div class="max-w-5xl mx-auto px-5">
+
+        <div class="text-center mb-14">
+            <span class="text-siagri-green text-sm font-semibold uppercase tracking-widest">Prosesnya Sederhana</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-siagri-dark mt-2">Cara Kerja SiAGRI</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+
+            <!-- Connector line desktop -->
+            <div class="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-siagri-dark/20 z-0"></div>
+
+            <?php
+            $steps = [
+                ['num'=>'1', 'icon'=>'📝', 'title'=>'Daftar Akun',       'desc'=>'Buat akun sebagai Petani atau Mitra Kios. Gratis dan cepat.'],
+                ['num'=>'2', 'icon'=>'🔍', 'title'=>'Cari Produk',       'desc'=>'Filter berdasarkan kategori. Pupuk, Benih, Alat, Pestisida.'],
+                ['num'=>'3', 'icon'=>'📦', 'title'=>'Pesan & Kunci Stok','desc'=>'Klik pesan, stok otomatis terkunci 24 jam hanya untukmu.'],
+                ['num'=>'4', 'icon'=>'🏪', 'title'=>'Ambil & Bayar',     'desc'=>'Datang ke kios, bayar kontan, dan bawa pulang produknya.'],
+            ];
+            foreach ($steps as $s): ?>
+            <div class="relative z-10 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-siagri-dark text-white rounded-full flex items-center justify-center
+                             text-2xl shadow-lg mb-4 border-4 border-siagri-light">
+                    <?= $s['icon'] ?>
+                </div>
+                <div class="bg-siagri-gold/10 text-siagri-dark text-xs font-bold px-2 py-0.5 rounded-full mb-2">
+                    Langkah <?= $s['num'] ?>
+                </div>
+                <h4 class="font-bold text-siagri-dark mb-2"><?= $s['title'] ?></h4>
+                <p class="text-gray-500 text-sm"><?= $s['desc'] ?></p>
+            </div>
+            <?php endforeach; ?>
+
+        </div>
+    </div>
+</section>
+
+<section id="kategori" class="py-20 bg-white">
+    <div class="max-w-5xl mx-auto px-5">
+
+        <div class="text-center mb-12">
+            <span class="text-siagri-green text-sm font-semibold uppercase tracking-widest">Tersedia di Platform</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-siagri-dark mt-2">Kategori Produk</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-5">
+            <?php
+            $cats = [
+                ['icon'=>'🌿', 'name'=>'Pupuk Subsidi',     'color'=>'bg-green-50 border-green-200'],
+                ['icon'=>'🧪', 'name'=>'Pupuk Non-Subsidi', 'color'=>'bg-blue-50 border-blue-200'],
+                ['icon'=>'🌾', 'name'=>'Benih',             'color'=>'bg-yellow-50 border-yellow-200'],
+                ['icon'=>'🔧', 'name'=>'Alat Tani',         'color'=>'bg-orange-50 border-orange-200'],
+                ['icon'=>'🐛', 'name'=>'Pestisida',         'color'=>'bg-red-50 border-red-200'],
+            ];
+            foreach ($cats as $c): ?>
+            <div class="<?= $c['color'] ?> border rounded-2xl p-5 text-center hover:scale-105
+                         transition cursor-pointer">
+                <div class="text-4xl mb-3"><?= $c['icon'] ?></div>
+                <p class="text-sm font-semibold text-siagri-dark"><?= $c['name'] ?></p>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="register.php"
+               class="inline-block bg-siagri-dark text-white font-bold px-8 py-3 rounded-full
+                      hover:bg-siagri-green transition shadow-lg">
+                Lihat Semua Produk →
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CTA SECTION                                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<section class="hero-bg py-24">
+    <div class="max-w-3xl mx-auto px-5 text-center text-white">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-5">
+            Siap Mulai Bertani Lebih Cerdas?
+        </h2>
+        <p class="text-white/70 mb-10 text-lg">
+            Bergabung dengan ribuan petani yang sudah merasakan kemudahan berbelanja kebutuhan pertanian secara digital.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="register.php"
+               class="bg-siagri-gold text-siagri-dark font-bold px-8 py-4 rounded-full
+                      hover:bg-yellow-400 transition shadow-xl text-base">
+                Daftar Sekarang!
+            </a>
+            <a href="login-page.php"
+               class="bg-white/10 border border-white/30 text-white font-bold px-8 py-4
+                      rounded-full hover:bg-white/20 transition text-base">
+                Sudah punya akun? Masuk
+            </a>
+        </div>
+    </div>
+</section>
+
+<?php include 'component/layout/footer.php'; ?>
+
+</body>
+</html>
