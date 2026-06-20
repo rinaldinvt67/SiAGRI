@@ -1,4 +1,5 @@
 <?php
+$path_prefix = '';
 session_start();
 // Kalau sudah login, redirect sesuai role
 if (isset($_SESSION['username'])) {
@@ -40,7 +41,7 @@ if (isset($_SESSION['username'])) {
         .feature-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(22,74,65,0.15); }
         .stat-number { font-size: 2.5rem; font-weight: 800; color: #f1b24a; line-height: 1; }
     </style>';
-    include 'komponen/layout/head.php';
+    include 'component/layout/head.php';
     ?>
 </head>
 <body class="bg-siagri-light text-gray-800 overflow-x-hidden">

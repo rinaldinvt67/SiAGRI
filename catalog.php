@@ -736,6 +736,7 @@ if ($role === 'Farmer') {
     </div>
     <?php endif; ?>
 </div>
+<?php endif; ?>
 
 <script src="assets/js/catalog.js"></script>
 <?php include 'component/layout/footer.php'; ?>

@@ -1,4 +1,19 @@
 <?php
+/**
+ * navbar.php — Komponen Navbar modular SiAGRI
+ * 
+ * Cara pakai:
+ * <?php $current_page = 'catalog'; include 'komponen/layout/navbar.php'; ?>
+ * 
+ * Variable opsional:
+ * - $current_page (string) — identifier halaman aktif
+ * - $cart_count   (int)    — jumlah item di cart (untuk role Farmer di halaman catalog)
+ * - $pesanan_pending (int) — jumlah pesanan pending (untuk role Kiosk)
+ * - $navbar_extra (string) — HTML tambahan sebelum </nav> (search bar, dll)
+ * 
+ * Session yang dibutuhkan: $_SESSION['username'], $_SESSION['role']
+ */
+
 $current_page    = $current_page    ?? '';
 $cart_count      = $cart_count      ?? 0;
 $pesanan_pending = $pesanan_pending ?? 0;
@@ -8,6 +23,7 @@ $is_logged_in = isset($_SESSION['username']);
 $role         = $_SESSION['role'] ?? '';
 $username     = $_SESSION['username'] ?? '';
 
+// Helper: class aktif
 function nav_active($page, $current) {
     if ($page === $current) {
         return 'text-white font-semibold border-b-2 border-siagri-gold pb-0.5';
@@ -15,6 +31,7 @@ function nav_active($page, $current) {
     return 'text-white/70 hover:text-white';
 }
 
+// Badge role
 function role_badge($role) {
     $badges = [
         'Farmer' => ['bg' => 'bg-green-500',  'text' => 'text-white',       'label' => '🌾 Petani'],
@@ -24,16 +41,17 @@ function role_badge($role) {
     ];
     $b = $badges[$role] ?? null;
     if (!$b) return '';
-    return "<span class="text-xs {$b['bg']} {$b['text']} px-2 py-0.5 rounded-full font-bold">{$b['label']}</span>";
+    return "<span class=\"text-xs {$b['bg']} {$b['text']} px-2 py-0.5 rounded-full font-bold\">{$b['label']}</span>";
 }
 ?>
 
 <nav class="bg-siagri-dark text-white sticky top-0 z-40 shadow-lg" id="main-navbar">
     <div class="max-w-7xl mx-auto px-5 py-4 md:py-5 flex items-center justify-between">
+
         <!-- Logo -->
         <a href="<?= $is_logged_in ? ($role === 'Admin' ? 'admin-dashboard.php' : ($role === 'Kiosk' ? 'dashboard.php' : 'catalog.php')) : 'index.php' ?>"
            class="flex items-center gap-3 shrink-0">
-            <img src="Assets/images/LOGO.png" alt="SiAGRI" class="h-10 md:h-11 w-auto"
+            <img src="assets/images/LOGO.png" alt="SiAGRI" class="h-10 md:h-11 w-auto"
                  onerror="this.style.display='none'">
         </a>
 
@@ -41,7 +59,7 @@ function role_badge($role) {
         <div class="hidden md:flex items-center gap-6">
 
             <?php if (!$is_logged_in): ?>
-                <!-- GUEST -->
+                <!-- ═══ GUEST ═══ -->
                 <a href="index.php"      class="<?= nav_active('index', $current_page) ?> text-sm transition">Beranda</a>
                 <a href="catalog.php"    class="<?= nav_active('catalog', $current_page) ?> text-sm transition">Marketplace</a>
                 <a href="forum.php"      class="<?= nav_active('forum', $current_page) ?> text-sm transition">Forum</a>
@@ -57,7 +75,7 @@ function role_badge($role) {
                 </a>
 
             <?php elseif ($role === 'Farmer'): ?>
-                <!--  FARMER  -->
+                <!-- ═══ FARMER ═══ -->
                 <a href="index.php"     class="<?= nav_active('index', $current_page) ?> text-sm transition">Beranda</a>
                 <a href="catalog.php"   class="<?= nav_active('catalog', $current_page) ?> text-sm transition">Katalog</a>
                 <a href="forum.php"     class="<?= nav_active('forum', $current_page) ?> text-sm transition">Forum Diskusi</a>
@@ -65,7 +83,7 @@ function role_badge($role) {
                 <a href="profile.php"   class="<?= nav_active('profile', $current_page) ?> text-sm transition">Profil</a>
 
             <?php elseif ($role === 'Kiosk'): ?>
-                <!--  KIOSK  -->
+                <!-- ═══ KIOSK ═══ -->
                 <a href="dashboard.php"       class="<?= nav_active('dashboard', $current_page) ?> text-sm transition">Dashboard</a>
                 <a href="manage-catalog.php"  class="<?= nav_active('manage-catalog', $current_page) ?> text-sm transition">Produk Saya</a>
                 <a href="incoming-orders.php" class="<?= nav_active('incoming-orders', $current_page) ?> text-sm transition relative">
@@ -80,18 +98,18 @@ function role_badge($role) {
                 <a href="profile.php" class="<?= nav_active('profile', $current_page) ?> text-sm transition">Profil</a>
 
             <?php elseif ($role === 'Expert'): ?>
-                <!--  EXPERT  -->
+                <!-- ═══ EXPERT ═══ -->
                 <a href="forum.php"   class="<?= nav_active('forum', $current_page) ?> text-sm transition">Forum</a>
                 <a href="profile.php" class="<?= nav_active('profile', $current_page) ?> text-sm transition">Profil</a>
 
             <?php elseif ($role === 'Admin'): ?>
-                <!--  ADMIN  -->
+                <!-- ═══ ADMIN ═══ -->
                 <a href="admin-dashboard.php" class="<?= nav_active('admin-dashboard', $current_page) ?> text-sm transition">Dashboard</a>
                 <a href="profile.php"         class="<?= nav_active('profile', $current_page) ?> text-sm transition">Profil</a>
             <?php endif; ?>
         </div>
 
-                <?php if ($current_page === 'catalog'): ?>
+        <?php if ($current_page === 'catalog'): ?>
         <!-- Search bar (desktop) -->
         <form method="GET" class="hidden md:flex items-center bg-white/10 rounded-full px-4 py-2 w-48 lg:w-72 xl:w-96 gap-2">
             <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,4 +268,5 @@ function role_badge($role) {
 
     <?php if (!empty($navbar_extra)) echo $navbar_extra; ?>
 </nav>
-        
+
+
