@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         $image_path = null;
         if (!empty($_FILES['product_image']['name'])) {
-            $upload_dir = '../../Assets/uploads/products/';
+            $upload_dir = '../../assets/uploads/products/';
             if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
             $ext     = strtolower(pathinfo($_FILES['product_image']['name'], PATHINFO_EXTENSION));
             $allowed = ['jpg','jpeg','png','webp'];
@@ -78,22 +78,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
 
     } elseif ($_POST['action'] === 'edit') {
-        $prod_id = (int)$_POST['product_id'];
-        $price   = (float)$_POST['selling_price'];
-        $stock   = (int)$_POST['stock'];
-        $het     = (float)($_POST['het_price'] ?? 0);
-        $desc    = mysqli_real_escape_string($conn, trim($_POST['description'] ?? ''));
+        $prod_id     = (int)$_POST['product_id'];
+        $name        = mysqli_real_escape_string($conn, trim($_POST['product_name']));
+        $category_id = (int)$_POST['category_id'];
+        $price       = (float)$_POST['selling_price'];
+        $stock       = (int)$_POST['stock'];
+        $subsidized  = $_POST['is_subsidized'];
+        $het         = (float)($_POST['het_price'] ?? 0);
+        $desc        = mysqli_real_escape_string($conn, trim($_POST['description'] ?? ''));
 
-        mysqli_query($conn,
-            "UPDATE products
-             SET selling_price = $price,
-                 stock         = $stock,
-                 het_price     = $het,
-                 description   = '$desc'
-             WHERE product_id = $prod_id AND kiosk_id = $kiosk_id"
-        );
-        header("Location: manage-catalog.php?success=updated");
-        exit;
+        // Handle image upload for edit
+        $image_path = null;
+        if (!empty($_FILES['product_image']['name'])) {
+            $upload_dir = '../../assets/uploads/products/';
+            if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+            $ext     = strtolower(pathinfo($_FILES['product_image']['name'], PATHINFO_EXTENSION));
+            $allowed = ['jpg','jpeg','png','webp'];
+            if (in_array($ext, $allowed) && $_FILES['product_image']['size'] <= 2*1024*1024) {
+                $filename = 'prod_' . $kiosk_id . '_' . time() . '.' . $ext;
+                move_uploaded_file($_FILES['product_image']['tmp_name'], $upload_dir . $filename);
+                $image_path = $upload_dir . $filename;
+            } else {
+                $error = "Format gambar harus JPG/PNG/WEBP, maks 2MB.";
+            }
+        }
+
+        if (!$error) {
+            if (empty($name) || $price <= 0) {
+                $error = "Nama produk dan harga wajib diisi!";
+            } else {
+                $img_sql = "";
+                if ($image_path) {
+                    $img_sql = ", product_image = '$image_path'";
+                }
+                
+                mysqli_query($conn,
+                    "UPDATE products
+                     SET product_name  = '$name',
+                         category_id   = $category_id,
+                         selling_price = $price,
+                         stock         = $stock,
+                         is_subsidized = '$subsidized',
+                         het_price     = $het,
+                         description   = '$desc'
+                         $img_sql
+                     WHERE product_id = $prod_id AND kiosk_id = $kiosk_id"
+                );
+                header("Location: manage-catalog.php?success=updated");
+                exit;
+            }
+        }
     }
 }
 
@@ -268,13 +302,16 @@ $categories = mysqli_query($conn,
                     </td>
                     <td class="px-5 py-4 text-center">
                         <div class="flex items-center justify-center gap-2">
-                            <button onclick="openEdit(
-                                        <?= $row['product_id'] ?>,
-                                        <?= $row['selling_price'] ?>,
-                                        <?= $row['stock'] ?>,
-                                        <?= $row['het_price'] ?>,
-                                        '<?= addslashes(htmlspecialchars($row['description'] ?? '')) ?>'
-                                    )"
+                            <button onclick='openEdit(
+                                        <?= $row["product_id"] ?>,
+                                        <?= htmlspecialchars(json_encode($row["product_name"]), ENT_QUOTES) ?>,
+                                        <?= $row["category_id"] ?>,
+                                        <?= $row["selling_price"] ?>,
+                                        <?= $row["stock"] ?>,
+                                        "<?= $row["is_subsidized"] ?>",
+                                        <?= $row["het_price"] ?>,
+                                        <?= htmlspecialchars(json_encode($row["description"] ?? ""), ENT_QUOTES) ?>
+                                    )'
                                     class="bg-blue-50 text-blue-600 hover:bg-blue-100
                                            text-xs px-3 py-1.5 rounded-lg font-medium transition">
                                 Edit
@@ -396,47 +433,89 @@ $categories = mysqli_query($conn,
 <!-- Modal Edit -->
 <div id="modal-edit"
      class="modal fixed inset-0 bg-black/50 z-50 items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
-        <div class="flex items-center justify-between px-6 py-4 border-b">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between px-6 py-4 border-b sticky top-0 bg-white">
             <h2 class="font-bold text-siagri-dark text-lg">Edit Produk</h2>
             <button onclick="toggleModal('modal-edit')"
                     class="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
         </div>
-        <form method="POST" class="p-6 space-y-4">
+        <form method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
             <input type="hidden" name="action" value="edit">
             <input type="hidden" name="product_id" id="edit_product_id">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk*</label>
+                <input type="text" name="product_name" id="edit_product_name" required placeholder="contoh: Urea 50kg"
+                       class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
+                              focus:outline-none focus:border-siagri-dark">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Kategori*</label>
+                <select name="category_id" id="edit_category_id" required
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
+                               focus:outline-none focus:border-siagri-dark">
+                    <option value="">-- Pilih Kategori --</option>
+                    <?php
+                    mysqli_data_seek($categories, 0);
+                    while ($c = mysqli_fetch_assoc($categories)):
+                    ?>
+                    <option value="<?= $c['category_id'] ?>">
+                        <?= htmlspecialchars($c['category_name']) ?>
+                    </option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Harga Jual (Rp)*</label>
-                    <input type="number" name="selling_price" id="edit_price"
-                           min="0" step="500" required
+                    <input type="number" name="selling_price" id="edit_price" required min="0" step="500"
                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
                                   focus:outline-none focus:border-siagri-dark">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Stok*</label>
-                    <input type="number" name="stock" id="edit_stock" min="0" required
+                    <input type="number" name="stock" id="edit_stock" required min="0"
+                           class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
+                                  focus:outline-none focus:border-siagri-dark">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Bersubsidi?</label>
+                    <select name="is_subsidized" id="edit_is_subsidized"
+                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
+                                   focus:outline-none focus:border-siagri-dark">
+                        <option value="No">Tidak</option>
+                        <option value="Yes">Ya (ada HET)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">HET (Rp)</label>
+                    <input type="number" name="het_price" id="edit_het" min="0" step="500"
                            class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
                                   focus:outline-none focus:border-siagri-dark">
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">HET (Rp)</label>
-                <input type="number" name="het_price" id="edit_het" min="0" step="500"
-                       class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
-                              focus:outline-none focus:border-siagri-dark">
-            </div>
-            <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                <textarea name="description" id="edit_desc" rows="2"
+                <textarea name="description" id="edit_desc" rows="2" placeholder="Jelaskan produkmu..."
                           class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
                                  focus:outline-none focus:border-siagri-dark resize-none"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Ganti Foto Produk (Biarkan kosong jika tidak ingin diubah)
+                </label>
+                <input type="file" name="product_image" accept="image/*"
+                       class="w-full text-sm text-gray-500
+                              file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0
+                              file:bg-siagri-dark file:text-white file:cursor-pointer
+                              hover:file:bg-siagri-green">
             </div>
             <div class="flex gap-3 pt-2">
                 <button type="submit"
                         class="flex-1 bg-siagri-dark text-white font-semibold py-2.5
                                rounded-xl hover:bg-siagri-green transition text-sm">
-                    Simpan
+                    Simpan Perubahan
                 </button>
                 <button type="button" onclick="toggleModal('modal-edit')"
                         class="flex-1 border border-gray-200 text-gray-600 py-2.5
@@ -448,7 +527,7 @@ $categories = mysqli_query($conn,
     </div>
 </div>
 
-<script src="../../Assets/js/catalog.js"></script>
+<script src="../../assets/js/catalog.js"></script>
 <?php include '../../component/layout/footer.php'; ?>
 
 </body>
