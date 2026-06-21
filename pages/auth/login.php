@@ -50,8 +50,8 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SiAGRI</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="../../Assets/images/ICON.png">
-    <link rel="stylesheet" href="../../Assets/css/global.css">
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
+    <link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 <body class="auth-body">
 

@@ -68,6 +68,7 @@ $count_active = mysqli_fetch_assoc(mysqli_query($conn,
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php $page_title = 'Pesanan Saya'; include '../../component/layout/head.php'; ?>
 </head>
 <body class="bg-gray-100 min-h-screen">

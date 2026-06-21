@@ -224,6 +224,7 @@ if ($role === 'Farmer') {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php
     $page_title = 'Katalog';
     $extra_head = '';

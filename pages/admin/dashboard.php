@@ -247,6 +247,7 @@ $recent_orders = mysqli_query($conn,
 <html lang="id">
 <head>
     <?php
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     $page_title = 'Admin Dashboard';
     $extra_head = '';
     include '../../component/layout/head.php';

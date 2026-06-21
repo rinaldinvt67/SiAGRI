@@ -7,6 +7,7 @@ require_once '../../config/koneksi.php';
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php $page_title = 'Kebijakan Privasi'; include '../../component/layout/head.php'; ?>
 </head>
 <body class="bg-siagri-light min-h-screen flex flex-col">

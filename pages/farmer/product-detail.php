@@ -143,6 +143,7 @@ $wa_url = "https://wa.me/" . format_whatsapp($p['whatsapp_number']) . "?text=" .
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php
     $page_title = 'Detail Produk - ' . htmlspecialchars($p['product_name']);
     $extra_head = '';

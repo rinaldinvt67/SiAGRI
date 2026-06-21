@@ -168,6 +168,7 @@ $rc = $role_config[$role] ?? $role_config['Farmer'];
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php
     $page_title = 'Profil Saya';
     $extra_head = '';

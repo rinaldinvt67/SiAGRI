@@ -12,7 +12,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Kiosk') {
 $kiosk_id = $_SESSION['kiosk_id'];
 $success  = "";
 
-// ─── LAZY CHECK: batalkan pesanan expired ─────────────────────────────────────
+// LAZY CHECK: batalkan pesanan expired
 $now = date('Y-m-d H:i:s');
 $expired = mysqli_query($conn,
     "SELECT o.order_id, oi.product_id, oi.quantity
@@ -34,7 +34,7 @@ mysqli_query($conn,
      AND kiosk_id = $kiosk_id"
 );
 
-// ─── KONFIRMASI PESANAN ───────────────────────────────────────────────────────
+// KONFIRMASI PESANAN
 if (isset($_GET['confirm'])) {
     $order_id = (int)$_GET['confirm'];
     mysqli_query($conn,
@@ -45,7 +45,7 @@ if (isset($_GET['confirm'])) {
     exit;
 }
 
-// ─── TANDAI SELESAI ───────────────────────────────────────────────────────────
+// TANDAI SELESAI
 if (isset($_GET['complete'])) {
     $order_id = (int)$_GET['complete'];
     mysqli_query($conn,
@@ -56,7 +56,7 @@ if (isset($_GET['complete'])) {
     exit;
 }
 
-// ─── BATALKAN PESANAN (oleh Kiosk) ───────────────────────────────────────────
+// BATALKAN PESANAN (oleh Kiosk)
 if (isset($_GET['cancel'])) {
     $order_id = (int)$_GET['cancel'];
 
@@ -89,7 +89,7 @@ if (isset($_GET['success'])) {
     $success = $msgs[$_GET['success']] ?? '';
 }
 
-// ─── FILTER STATUS ────────────────────────────────────────────────────────────
+// FILTER STATUS 
 $filter = isset($_GET['status']) ? $_GET['status'] : 'active';
 if ($filter === 'active') {
     $where_status = "AND o.status IN ('pending','confirmed')";
@@ -101,7 +101,7 @@ if ($filter === 'active') {
     $where_status = "";
 }
 
-// ─── AMBIL PESANAN ────────────────────────────────────────────────────────────
+// AMBIL PESANAN
 $orders = mysqli_query($conn,
     "SELECT o.*,
             u.username,
@@ -307,7 +307,7 @@ $count_pending = mysqli_fetch_assoc(mysqli_query($conn,
 
 </div>
 
-<script src="../../Assets/js/orders.js"></script>
+<script src="../../assets/js/orders.js"></script>
 <?php include '../../component/layout/footer.php'; ?>
 
 </body>
