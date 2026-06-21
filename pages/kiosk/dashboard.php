@@ -360,8 +360,11 @@ $kyc = $kyc_config[$kyc_status];
         <div class="flex items-center justify-between mb-4">
             <h2 class="font-bold text-siagri-dark text-lg">Pesanan Terbaru</h2>
             <a href="../../pages/kiosk/incoming-orders.php"
-               class="text-sm text-siagri-dark underline">
-                Lihat semua →
+               class="text-sm text-siagri-dark hover:underline flex items-center gap-1">
+                <span>Lihat semua</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 fill-current">
+                    <path d="M4 11h12.17l-5.59-5.59L12 4l8 8l-8 8l-1.41-1.41L16.17 13H4z"></path>
+                </svg>
             </a>
         </div>
         <div class="overflow-x-auto">
