@@ -1,17 +1,17 @@
 <?php
-$path_prefix = '';
+$path_prefix = '../../';
 
 session_start();
-require_once 'koneksi.php';
+require_once '../../config/koneksi.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <?php $page_title = 'Syarat & Ketentuan Layanan'; include 'component/layout/head.php'; ?>
+    <?php $page_title = 'Syarat & Ketentuan Layanan'; include '../../component/layout/head.php'; ?>
 </head>
 <body class="bg-siagri-light min-h-screen flex flex-col">
 
-<?php $current_page = ''; include 'component/layout/navbar.php'; ?>
+<?php $current_page = ''; include '../../component/layout/navbar.php'; ?>
 
 <main class="flex-1 max-w-4xl mx-auto px-6 py-12">
     <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-12 fade-in">
@@ -26,7 +26,7 @@ require_once 'koneksi.php';
             </div>
             <!-- Language Switcher -->
             <div class="flex justify-center sm:justify-end shrink-0">
-                <a href="terms-of-service-en.php" 
+                <a href="terms-of-service.php" 
                    class="flex items-center gap-1.5 border border-siagri-dark/20 text-siagri-dark hover:bg-siagri-dark hover:text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300">
                     🇺🇸 English Version
                 </a>
@@ -117,7 +117,7 @@ require_once 'koneksi.php';
     </div>
 </main>
 
-<?php include 'component/layout/footer.php'; ?>
+<?php include '../../component/layout/footer.php'; ?>
 
 </body>
 </html>

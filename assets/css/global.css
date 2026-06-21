@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. PONDASI UTAMA (VARIABLES, RESET & BASE VALUES)
+   ========================================================================== */
 :root {
     /* Color Palette SiAGRI */
     --siagri-dark: #164a41;
@@ -42,7 +45,9 @@ input::-ms-clear {
 ::-webkit-scrollbar-thumb:hover {
     background: #164a41;
 }
-
+/* ==========================================================================
+   2. ATURAN ANIMASI (@KEYFRAMES)
+   ========================================================================== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -62,7 +67,9 @@ input::-ms-clear {
     25% { transform: translateX(-6px); }
     75% { transform: translateX(6px); }
 }
-
+/* ==========================================================================
+   3. UTILITY CLASSES GLOBAL
+   ========================================================================== */
 .fade-in {
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
@@ -94,7 +101,9 @@ input::-ms-clear {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
+/* ==========================================================================
+   4. KOMPONEN BERSAMA (SHARED COMPONENTS)
+   ========================================================================== */
 /* --- Modal (admin-dashboard.php & manage-catalog.php) --- */
 .modal {
     display: none;
@@ -119,7 +128,10 @@ input::-ms-clear {
     opacity: 1;
     pointer-events: all;
 }
-/* --- Landing Page (index.php) --- */
+/* ==========================================================================
+   5. KOMPONEN SPESIFIK HALAMAN
+   ========================================================================== */
+/* --- A. Landing Page (index.php) --- */
 .hero-bg {
     background-image:
         linear-gradient(to bottom, rgba(22,74,65,0.82), rgba(22,74,65,0.65)),
@@ -145,7 +157,7 @@ input::-ms-clear {
     color: var(--siagri-gold);
     line-height: 1;
 }
-/* --- Halaman Autentikasi (login-page.php, register.php, forgotPassword.php) --- */
+/* --- B. Halaman Autentikasi (login-page.php, register.php, forgotPassword.php) --- */
 .auth-body {
     min-height: 100vh;
     display: flex;

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'koneksi.php';
+require_once '../config/koneksi.php';
 
 // Hanya bisa diakses via POST (dari fetch() JS)
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

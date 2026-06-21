@@ -1,11 +1,21 @@
 <?php
+/**
+ * head.php — Komponen <head> modular SiAGRI
+ * 
+ * Cara pakai:
+ * <?php $page_title = "Katalog"; include 'component/layout/head.php'; ?>
+ * 
+ * Variable opsional:
+ * - $page_title (string) — judul halaman (default: "SiAGRI")
+ * - $extra_head  (string) — HTML tambahan sebelum </head> (CSS/JS khusus halaman)
+ */
+
 $page_title = $page_title ?? 'SiAGRI';
 ?>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SiAGRI — Platform digital agrikultur untuk petani modern Indonesia">
 <title><?= htmlspecialchars($page_title) ?> - SiAGRI</title>
-<link rel="icon" type="image/png" href="<?= $path_prefix ?>Assets/images/ICON.png">
 
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -35,8 +45,8 @@ tailwind.config = {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Global Styles -->
-<link rel="stylesheet" href="<?= $path_prefix ?>assets/css/global.css"> 
 
+<!-- Global Styles -->
+<link rel="stylesheet" href="<?= $path_prefix ?>Assets/css/global.css">
 
 <?php if (!empty($extra_head)) echo $extra_head; ?>

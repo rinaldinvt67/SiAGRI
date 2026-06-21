@@ -1,12 +1,5 @@
 <?php
-/**
- * footer.php — Komponen Footer modular SiAGRI
- * 
- * Cara pakai:
- * <?php include 'komponen/layout/footer.php'; ?>
- * 
- * TIDAK termasuk </body></html> — halaman pemanggil harus menutup sendiri.
- */
+/** Tampilan footer */
 ?>
 
 <footer class="bg-siagri-dark text-white pt-16 pb-8 relative">
@@ -19,7 +12,7 @@
             <!-- Brand -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
-                    <img src="Assets/images/LOGO.png" alt="SiAGRI" class="h-8 w-auto"
+                    <img src="<?= $path_prefix ?>Assets/images/LOGO.png" alt="SiAGRI" class="h-8 w-auto"
                          onerror="this.style.display='none'"
                          style="filter: brightness(0) invert(1); opacity: 0.85;">
                 </div>
@@ -34,9 +27,9 @@
             <div>
                 <h3 class="text-sm font-semibold mb-5 uppercase tracking-wider text-siagri-gold">Navigasi</h3>
                 <ul class="flex flex-col space-y-3">
-                    <li><a href="index.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Beranda</a></li>
-                    <li><a href="catalog.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Katalog Produk</a></li>
-                    <li><a href="forum.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Forum Diskusi</a></li>
+                    <li><a href="<?= $path_prefix ?>index.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Beranda</a></li>
+                    <li><a href="<?= $path_prefix ?>pages/farmer/catalog.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Katalog Produk</a></li>
+                    <li><a href="<?= $path_prefix ?>pages/farmer/forum.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Forum Diskusi</a></li>
                 </ul>
             </div>
 
@@ -54,8 +47,8 @@
             <div>
                 <h3 class="text-sm font-semibold mb-5 uppercase tracking-wider text-siagri-gold">Kebijakan</h3>
                 <ul class="flex flex-col space-y-3">
-                    <li><a href="terms-of-service.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Syarat Layanan</a></li>
-                    <li><a href="privacy-policy.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Kebijakan Privasi</a></li>
+                    <li><a href="<?= $path_prefix ?>pages/general/terms-of-service.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Syarat Layanan</a></li>
+                    <li><a href="<?= $path_prefix ?>pages/general/privacy-policy.php" class="text-white/50 hover:text-white transition duration-300 text-sm">Kebijakan Privasi</a></li>
                     <li><a href="#" class="text-white/50 hover:text-white transition duration-300 text-sm">Pemberitahuan</a></li>
                 </ul>
             </div>
@@ -83,4 +76,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
         </svg>
     </button>
+
+    <script src="<?= $path_prefix ?>Assets/js/main.js"></script>
 </footer>

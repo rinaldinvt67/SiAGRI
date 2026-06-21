@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $password = "";
-$database = "siagri";
+$database = "siagri_tes";
 
 $conn = mysqli_connect($host, $user, $password, $database);
 if (!$conn) {

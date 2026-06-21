@@ -1,9 +1,11 @@
 <?php
+$path_prefix = '../../';
+
 session_start();
-require_once 'koneksi.php';
+require_once '../../config/koneksi.php';
 
 if (!isset($_SESSION['username'])) {
-    header("Location: login-page.php");
+    header("Location: ../../pages/auth/login.php");
     exit;
 }
 
@@ -12,12 +14,12 @@ $user_id = $_SESSION['user_id'];
 $error   = "";
 $success = "";
 
-// ─── AMBIL DATA USER ─────────────────────────────────────────
+// AMBIL DATA USER
 $user = mysqli_fetch_assoc(mysqli_query($conn,
     "SELECT * FROM users WHERE user_id = $user_id"
 ));
 
-// ─── AMBIL DATA TAMBAHAN SESUAI ROLE ─────────────────────────
+// AMBIL DATA TAMBAHAN SESUAI ROLE
 $extra = null;
 if ($role === 'Kiosk') {
     $extra = mysqli_fetch_assoc(mysqli_query($conn,
@@ -29,7 +31,7 @@ if ($role === 'Kiosk') {
     ));
 }
 
-// ─── UPDATE PROFIL ────────────────────────────────────────────
+// UPDATE PROFIL 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if ($_POST['action'] === 'update_user') {
@@ -117,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// ─── STATISTIK PER ROLE ───────────────────────────────────────
+// STATISTIK PER ROLE
 $stats = [];
 if ($role === 'Farmer') {
     $r = mysqli_fetch_assoc(mysqli_query($conn,
@@ -152,26 +154,14 @@ if ($role === 'Farmer') {
         "SELECT COUNT(*) as total FROM orders WHERE kiosk_id=$kiosk_id AND status='pending'"
     ));
     $stats['pending_orders'] = $r3['total'] ?? 0;
-
-} elseif ($role === 'Admin') {
-    $r = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users"));
-    $stats['total_users'] = $r['total'] ?? 0;
-
-    $r2 = mysqli_fetch_assoc(mysqli_query($conn,
-        "SELECT COUNT(*) as total FROM kiosk_profiles WHERE kyc_status='pending'"
-    ));
-    $stats['kyc_pending'] = $r2['total'] ?? 0;
-
-    $r3 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM orders"));
-    $stats['total_orders'] = $r3['total'] ?? 0;
 }
 
-// ─── CONFIG ROLE ──────────────────────────────────────────────
+// CONFIG ROLE
 $role_config = [
-    'Farmer' => ['icon'=>'🌾', 'color'=>'siagri-dark',  'label'=>'Petani',    'back'=>'catalog.php'],
-    'Kiosk'  => ['icon'=>'🏪', 'color'=>'siagri-green', 'label'=>'Mitra Kios','back'=>'dashboard.php'],
-    'Expert' => ['icon'=>'👨‍🔬', 'color'=>'blue-700',   'label'=>'Pakar',     'back'=>'catalog.php'],
-    'Admin'  => ['icon'=>'⚙️', 'color'=>'gray-800',     'label'=>'Admin',     'back'=>'admin-dashboard.php'],
+    'Farmer' => ['color'=>'siagri-dark',  'label'=>'Petani',    'back'=>'catalog.php'],
+    'Kiosk'  => ['color'=>'siagri-green', 'label'=>'Mitra Kios','back'=>'dashboard.php'],
+    'Expert' => ['color'=>'blue-700',   'label'=>'Pakar',     'back'=>'catalog.php'],
+    'Admin'  => ['color'=>'gray-800',     'label'=>'Admin',     'back'=>'admin-dashboard.php'],
 ];
 $rc = $role_config[$role] ?? $role_config['Farmer'];
 ?>
@@ -180,25 +170,25 @@ $rc = $role_config[$role] ?? $role_config['Farmer'];
 <head>
     <?php
     $page_title = 'Profil Saya';
-    $extra_head = '<style>.tab-btn { transition: all 0.2s; } .tab-btn.active { background: #164a41; color: white; }</style>';
-    include 'komponen/layout/head.php';
+    $extra_head = '';
+    include '../../component/layout/head.php';
     ?>
 </head>
 <body class="bg-gray-50 min-h-screen">
 
-<?php $current_page = 'profile'; include 'component/layout/navbar.php'; ?>
+<?php $current_page = 'profile'; include '../../component/layout/navbar.php'; ?>
 
 <div class="max-w-5xl mx-auto px-4 py-8">
 
     <!-- Notifikasi -->
     <?php if ($success): ?>
     <div class="mb-5 p-3 bg-green-50 text-green-800 rounded-xl border border-green-200 text-sm">
-        ✅ <?= htmlspecialchars($success) ?>
+        <svg class="inline-block w-4 h-4 mr-1.5 align-middle text-green-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" clip-rule="evenodd"/></svg> <?= htmlspecialchars($success) ?>
     </div>
     <?php endif; ?>
     <?php if ($error): ?>
     <div class="mb-5 p-3 bg-red-50 text-red-800 rounded-xl border border-red-200 text-sm">
-        ❌ <?= htmlspecialchars($error) ?>
+        <svg class="inline-block w-4 h-4 mr-1.5 align-middle text-red-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 0 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 0 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clip-rule="evenodd"/></svg> <?= htmlspecialchars($error) ?>
     </div>
     <?php endif; ?>
 
@@ -209,9 +199,9 @@ $rc = $role_config[$role] ?? $role_config['Farmer'];
 
             <!-- Avatar card -->
             <div class="bg-white rounded-2xl shadow-sm p-6 text-center border border-gray-100">
-                <div class="w-24 h-24 bg-siagri-dark rounded-full flex items-center justify-center
-                             text-4xl mx-auto mb-4 shadow-lg">
-                    <?= $rc['icon'] ?>
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center
+                             mx-auto mb-4 shadow-lg overflow-hidden border border-gray-200">
+                    <img src="../../Assets/images/Placeholder-photo.png" alt="Profile Photo" class="w-full h-full object-cover rounded-full">
                 </div>
                 <h2 class="font-bold text-siagri-dark text-xl">
                     <?= htmlspecialchars($user['username']) ?>
@@ -240,10 +230,16 @@ $rc = $role_config[$role] ?? $role_config['Farmer'];
                         <?= $kc['text'] ?>
                     </span>
                     <?php if ($ks !== 'verified'): ?>
-                    <a href="kyc-upload.php"
-                       class="block mt-2 text-center text-xs text-siagri-dark underline">
-                        Upload dokumen →
-                    </a>
+                    <div class="mt-3">
+                        <a href="../../pages/kiosk/kyc-upload.php"
+                           class="inline-flex items-center gap-2 bg-siagri-dark text-white font-semibold px-4 py-2 rounded-xl
+                                  hover:bg-siagri-green transition text-sm">
+                            Upload dokumen
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4 fill-current">
+                                <path d="M4 11h12.17l-5.59-5.59L12 4l8 8l-8 8l-1.41-1.41L16.17 13H4z"></path>
+                            </svg>
+                        </a>
+                    </div>
                     <?php endif; ?>
                 </div>
                 <?php endif; ?>
@@ -443,40 +439,39 @@ $rc = $role_config[$role] ?? $role_config['Farmer'];
                 <h3 class="font-semibold text-siagri-dark mb-4">Aksi Cepat</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <?php if ($role === 'Farmer'): ?>
-                    <a href="catalog.php"   class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                    <a href="../../pages/farmer/catalog.php"   class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                         Katalog
                     </a>
-                    <a href="my-orders.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                    <a href="../../pages/farmer/my-orders.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         Pesanan Saya
                     </a>
                     <?php elseif ($role === 'Kiosk'): ?>
-                    <a href="catalog.php"         class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
-                        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M22 22H2m18 0V11M4 22V11"/><path stroke-linejoin="round" d="M16.528 2H7.472c-1.203 0-1.804 0-2.287.299c-.484.298-.753.836-1.29 1.912L2.49 7.76c-.324.82-.608 1.786-.062 2.479A2 2 0 0 0 6 9a2 2 0 1 0 4 0a2 2 0 1 0 4 0a2 2 0 1 0 4 0a2 2 0 0 0 3.571 1.238c.546-.693.262-1.659-.062-2.479l-1.404-3.548c-.537-1.076-.806-1.614-1.29-1.912C18.332 2 17.731 2 16.528 2Z"/>
-                        <path stroke-linecap="round" d="M9.5 21.5v-3c0-.935 0-1.402.201-1.75a1.5 1.5 0 0 1 .549-.549C10.598 16 11.065 16 12 16s1.402 0 1.75.201a1.5 1.5 0 0 1 .549.549c.201.348.201.815.201 1.75v3"/></g></svg>
+                    <a href="../../pages/farmer/catalog.php"         class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                        <svg class="inline-block w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3.778 3.655c-.181.36-.27.806-.448 1.696l-.598 2.99a3.06 3.06 0 1 0 6.043.904l.07-.69a3.167 3.167 0 1 0 6.307-.038l.073.728a3.06 3.06 0 1 0 6.043-.904l-.598-2.99c-.178-.89-.267-1.335-.448-1.696a3 3 0 0 0-1.888-1.548C17.944 2 17.49 2 16.582 2H7.418c-.908 0-1.362 0-1.752.107a3 3 0 0 0-1.888 1.548M18.269 13.5a4.53 4.53 0 0 0 2.231-.581V14c0 3.771 0 5.657-1.172 6.828c-.943.944-2.348 1.127-4.828 1.163V18.5c0-.935 0-1.402-.201-1.75a1.5 1.5 0 0 0-.549-.549C13.402 16 12.935 16 12 16s-1.402 0-1.75.201a1.5 1.5 0 0 0-.549.549c-.201.348-.201.815-.201 1.75v3.491c-2.48-.036-3.885-.22-4.828-1.163C3.5 19.657 3.5 17.771 3.5 14v-1.081a4.53 4.53 0 0 0 2.232.581a4.55 4.55 0 0 0 3.112-1.228A4.64 4.64 0 0 0 12 13.5a4.64 4.64 0 0 0 3.156-1.228a4.55 4.55 0 0 0 3.112 1.228"></path></svg>
                         Marketplace
                     </a>
-                    <a href="dashboard.php"       class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
-                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+                    <a href="../../pages/kiosk/dashboard.php"       class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                        <svg class="inline-block w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.293 2.293C17 2.586 17 3.057 17 4v13c0 .943 0 1.414.293 1.707S18.057 19 19 19s1.414 0 1.707-.293S21 17.943 21 17V4c0-.943 0-1.414-.293-1.707S19.943 2 19 2s-1.414 0-1.707.293M10 7c0-.943 0-1.414.293-1.707S11.057 5 12 5s1.414 0 1.707.293S14 6.057 14 7v10c0 .943 0 1.414-.293 1.707S12.943 19 12 19s-1.414 0-1.707-.293S10 17.943 10 17zM3.293 9.293C3 9.586 3 10.057 3 11v6c0 .943 0 1.414.293 1.707S4.057 19 5 19s1.414 0 1.707-.293S7 17.943 7 17v-6c0-.943 0-1.414-.293-1.707S5.943 9 5 9s-1.414 0-1.707.293M3 21.25a.75.75 0 0 0 0 1.5h18a.75.75 0 0 0 0-1.5z"/></svg>
                         Dashboard
                     </a>
-                    <a href="incoming-orders.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                    <a href="../../pages/kiosk/incoming-orders.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         Pesanan
                     </a>
                     <?php elseif ($role === 'Admin'): ?>
-                    <a href="admin-dashboard.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
-                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <a href="../../pages/admin/dashboard.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                        <svg class="inline-block w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.293 2.293C17 2.586 17 3.057 17 4v13c0 .943 0 1.414.293 1.707S18.057 19 19 19s1.414 0 1.707-.293S21 17.943 21 17V4c0-.943 0-1.414-.293-1.707S19.943 2 19 2s-1.414 0-1.707.293M10 7c0-.943 0-1.414.293-1.707S11.057 5 12 5s1.414 0 1.707.293S14 6.057 14 7v10c0 .943 0 1.414-.293 1.707S12.943 19 12 19s-1.414 0-1.707-.293S10 17.943 10 17zM3.293 9.293C3 9.586 3 10.057 3 11v6c0 .943 0 1.414.293 1.707S4.057 19 5 19s1.414 0 1.707-.293S7 17.943 7 17v-6c0-.943 0-1.414-.293-1.707S5.943 9 5 9s-1.414 0-1.707.293M3 21.25a.75.75 0 0 0 0 1.5h18a.75.75 0 0 0 0-1.5z"></path></svg>
                         Dashboard Admin
                     </a>
                     <?php elseif ($role === 'Expert'): ?>
-                    <a href="forum.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
+                    <a href="../../pages/farmer/forum.php" class="text-center bg-siagri-light p-3 rounded-xl text-sm font-medium text-siagri-dark hover:bg-siagri-dark hover:text-white transition flex items-center justify-center gap-2">
                         <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                         Forum
                     </a>
                     <?php endif; ?>
-                    <a href="logout.php" class="text-center bg-red-50 p-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-500 hover:text-white transition flex items-center justify-center gap-2">
+                    <a href="../../proses/logout.php" class="text-center bg-red-50 p-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-500 hover:text-white transition flex items-center justify-center gap-2">
                         <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 8V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-2"/><path d="M15 12H3l3-3m0 6l-3-3"/></g></svg>
                         Logout
                     </a>
@@ -487,8 +482,8 @@ $rc = $role_config[$role] ?? $role_config['Farmer'];
     </div>
 </div>
 
-<script src="assets/js/auth.js"></script>
-<?php include 'component/layout/footer.php'; ?>
+<script src="../../Assets/js/auth.js"></script>
+<?php include '../../component/layout/footer.php'; ?>
 
 </body>
 </html>

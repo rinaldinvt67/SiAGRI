@@ -1,16 +1,16 @@
 <?php
-$path_prefix = '';
+$path_prefix = '../../';
 
 session_start();
-require_once 'koneksi.php';
+require_once '../../config/koneksi.php';
 
 if (!isset($_SESSION['username'])) {
-    header("Location: login-page.php");
+    header("Location: ../../pages/auth/login.php");
     exit;
 }
 
 if ($_SESSION['role'] !== 'Kiosk') {
-    header("Location: catalog.php");
+    header("Location: ../../pages/farmer/catalog.php");
     exit;
 }
 
@@ -163,11 +163,11 @@ $kyc = $kyc_config[$kyc_status];
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <?php $page_title = 'Dashboard Kios'; include 'component/layout/head.php'; ?>
+    <?php $page_title = 'Dashboard Kios'; include '../../component/layout/head.php'; ?>
 </head>
 <body class="bg-gray-100 min-h-screen">
 
-<?php $current_page = 'dashboard'; include 'component/layout/navbar.php'; ?>
+<?php $current_page = 'dashboard'; include '../../component/layout/navbar.php'; ?>
 
 <div class="max-w-7xl mx-auto px-5 py-8">
 
@@ -199,7 +199,7 @@ $kyc = $kyc_config[$kyc_status];
             <p class="font-semibold">Status Verifikasi: <?= $kyc['label'] ?></p>
             <p class="text-sm mt-0.5"><?= $kyc['desc'] ?></p>
             <?php if ($kyc['show_btn']): ?>
-            <a href="kyc-upload.php"
+            <a href="../../pages/kiosk/kyc-upload.php"
                class="inline-flex items-center gap-2 mt-2 bg-siagri-dark text-white text-sm
                       px-4 py-1.5 rounded-lg hover:bg-siagri-green transition">
                 Upload Dokumen KYC
@@ -293,7 +293,7 @@ $kyc = $kyc_config[$kyc_status];
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
 
         <!-- Kelola Produk -->
-        <a href="manage-catalog.php"
+        <a href="../../pages/kiosk/manage-catalog.php"
            class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100
                   hover:shadow-md hover:-translate-y-1 transition group">
             <div class="w-12 h-12 bg-siagri-dark rounded-xl flex items-center
@@ -307,7 +307,7 @@ $kyc = $kyc_config[$kyc_status];
         </a>
 
         <!-- Pesanan Masuk -->
-        <a href="incoming-orders.php"
+        <a href="../../pages/kiosk/incoming-orders.php"
            class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100
                   hover:shadow-md hover:-translate-y-1 transition group relative">
             <div class="w-12 h-12 bg-siagri-dark rounded-xl flex items-center
@@ -327,7 +327,7 @@ $kyc = $kyc_config[$kyc_status];
         </a>
 
         <!-- Profil Toko -->
-        <a href="profile.php"
+        <a href="../../pages/general/profile.php"
            class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100
                   hover:shadow-md hover:-translate-y-1 transition group">
             <div class="w-12 h-12 bg-siagri-dark rounded-xl flex items-center
@@ -359,7 +359,7 @@ $kyc = $kyc_config[$kyc_status];
     <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
         <div class="flex items-center justify-between mb-4">
             <h2 class="font-bold text-siagri-dark text-lg">Pesanan Terbaru</h2>
-            <a href="incoming-orders.php"
+            <a href="../../pages/kiosk/incoming-orders.php"
                class="text-sm text-siagri-dark underline">
                 Lihat semua →
             </a>
@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
-<?php include 'component/layout/footer.php'; ?>
+<?php include '../../component/layout/footer.php'; ?>
 
 </body>
 </html>

@@ -1,11 +1,11 @@
 <?php
-$path_prefix = '';
+$path_prefix = '../../';
 
 session_start();
-require_once 'koneksi.php';
+require_once '../../config/koneksi.php';
 
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Admin') {
-    header("Location: login-page.php");
+    header("Location: ../../pages/auth/login.php");
     exit;
 }
 
@@ -21,7 +21,7 @@ if (isset($_GET['kyc_approve'])) {
          SET kyc_status = 'verified', verified_at = '$now', kyc_note = NULL
          WHERE kiosk_id = $kiosk_id"
     );
-    header("Location: admin-dashboard.php?tab=kyc&success=approved");
+    header("Location: ../../pages/admin/dashboard.php?tab=kyc&success=approved");
     exit;
 }
 
@@ -33,7 +33,7 @@ if (isset($_GET['kyc_reject'])) {
          SET kyc_status = 'rejected', kyc_note = '$note', verified_at = NULL
          WHERE kiosk_id = $kiosk_id"
     );
-    header("Location: admin-dashboard.php?tab=kyc&success=rejected");
+    header("Location: ../../pages/admin/dashboard.php?tab=kyc&success=rejected");
     exit;
 }
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 mysqli_query($conn,
                     "INSERT INTO categories (category_name) VALUES ('$name')"
                 );
-                header("Location: admin-dashboard.php?tab=categories&success=cat_added");
+                header("Location: ../../pages/admin/dashboard.php?tab=categories&success=cat_added");
                 exit;
             }
         }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $error = "Kategori tidak bisa dihapus karena masih digunakan oleh {$used['total']} produk!";
         } else {
             mysqli_query($conn, "DELETE FROM categories WHERE category_id = $cat_id");
-            header("Location: admin-dashboard.php?tab=categories&success=cat_deleted");
+            header("Location: ../../pages/admin/dashboard.php?tab=categories&success=cat_deleted");
             exit;
         }
     }
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $error = "Tidak bisa menghapus akun sendiri!";
         } else {
             mysqli_query($conn, "DELETE FROM users WHERE user_id = $del_user_id");
-            header("Location: admin-dashboard.php?tab=users&success=user_deleted");
+            header("Location: ../../pages/admin/dashboard.php?tab=users&success=user_deleted");
             exit;
         }
     }
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 "INSERT INTO expert_profiles (user_id, full_name, specialization, whatsapp_number)
                  VALUES ($new_id, '$fullname', '$spec', '$wa')"
             );
-            header("Location: admin-dashboard.php?tab=users&success=expert_added");
+            header("Location: ../../pages/admin/dashboard.php?tab=users&success=expert_added");
             exit;
         }
     }
@@ -249,12 +249,12 @@ $recent_orders = mysqli_query($conn,
     <?php
     $page_title = 'Admin Dashboard';
     $extra_head = '';
-    include 'component/layout/head.php';
+    include '../../component/layout/head.php';
     ?>
 </head>
 <body class="bg-gray-100 min-h-screen">
 
-<?php $current_page = 'admin-dashboard'; include 'component/layout/navbar.php'; ?>
+<?php $current_page = 'admin-dashboard'; include '../../component/layout/navbar.php'; ?>
 
 <div class="max-w-7xl mx-auto px-5 py-8">
 
@@ -860,7 +860,7 @@ $recent_orders = mysqli_query($conn,
     </div>
 </div>
 
-<script src="assets/js/catalog.js"></script>
+<script src="../../Assets/js/catalog.js"></script>
 <!-- Chart.js Library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -981,7 +981,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
-<?php include 'component/layout/footer.php'; ?>
+<?php include '../../component/layout/footer.php'; ?>
 
 </body>
 </html>
