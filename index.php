@@ -21,8 +21,7 @@ if (isset($_SESSION['username'])) {
 <head>
     <?php
     $page_title = 'Sistem Informasi Agrikultur';
-    $extra_head = '
-    ';
+    $extra_head = '';
     include 'component/layout/head.php';
     ?>
 </head>
