@@ -41,16 +41,22 @@ window.toggleModal = function(id) {
 };
 
 // 5. Open Edit Product Modal (Kiosk)
-window.openEdit = function(product_id, price, stock, het, desc) {
+window.openEdit = function(product_id, name, category_id, price, stock, is_subsidized, het, desc) {
     const editId = document.getElementById('edit_product_id');
+    const editName = document.getElementById('edit_product_name');
+    const editCategory = document.getElementById('edit_category_id');
     const editPrice = document.getElementById('edit_price');
     const editStock = document.getElementById('edit_stock');
+    const editSubsidized = document.getElementById('edit_is_subsidized');
     const editHet = document.getElementById('edit_het');
     const editDesc = document.getElementById('edit_desc');
 
     if (editId) editId.value = product_id;
+    if (editName) editName.value = name;
+    if (editCategory) editCategory.value = category_id;
     if (editPrice) editPrice.value = price;
     if (editStock) editStock.value = stock;
+    if (editSubsidized) editSubsidized.value = is_subsidized;
     if (editHet) editHet.value = het;
     if (editDesc) editDesc.value = desc;
 
