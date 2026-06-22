@@ -141,12 +141,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 passwordInput.style.borderColor = '';
                 return false;
             }
-            if (val.length < 6) {
+
+            const hasLength = val.length >= 6;
+            const hasCapital = /[A-Z]/.test(val);
+            const hasNumber = /[0-9]/.test(val);
+            const hasSymbol = /[^A-Za-z0-9]/.test(val);
+
+            if (!hasLength) {
                 fb.innerHTML = '<svg class="inline-block w-4 h-4 mr-1 text-red-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 0 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 0 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clip-rule="evenodd"/></svg> Password minimal 6 karakter';
                 fb.style.color = '#fca5a5';
                 passwordInput.style.borderColor = '#dc2626';
                 return false;
             }
+            if (!hasCapital) {
+                fb.innerHTML = '<svg class="inline-block w-4 h-4 mr-1 text-red-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 0 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 0 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clip-rule="evenodd"/></svg> Minimal 1 huruf kapital (A-Z)';
+                fb.style.color = '#fca5a5';
+                passwordInput.style.borderColor = '#dc2626';
+                return false;
+            }
+            if (!hasNumber) {
+                fb.innerHTML = '<svg class="inline-block w-4 h-4 mr-1 text-red-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 0 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 0 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clip-rule="evenodd"/></svg> Minimal 1 angka (0-9)';
+                fb.style.color = '#fca5a5';
+                passwordInput.style.borderColor = '#dc2626';
+                return false;
+            }
+            if (!hasSymbol) {
+                fb.innerHTML = '<svg class="inline-block w-4 h-4 mr-1 text-red-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 0 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 0 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clip-rule="evenodd"/></svg> Minimal 1 simbol (e.g. @, #, $, !)';
+                fb.style.color = '#fca5a5';
+                passwordInput.style.borderColor = '#dc2626';
+                return false;
+            }
+
             fb.innerHTML = '<svg class="inline-block w-4 h-4 mr-1 text-green-500 fill-current" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0" clip-rule="evenodd"/></svg> Password kuat';
             fb.style.color = '#86efac';
             passwordInput.style.borderColor = '#22c55e';

@@ -16,6 +16,14 @@ if (isset($_POST['register'])) {
 
     if (empty($username) || empty($email) || empty($password) || empty($confirm) || empty($role)) {
         $pesan_error = "Semua kolom wajib diisi!";
+    } elseif (strlen($password) < 6) {
+        $pesan_error = "Password minimal 6 karakter!";
+    } elseif (!preg_match('/[A-Z]/', $password)) {
+        $pesan_error = "Password harus mengandung minimal 1 huruf kapital!";
+    } elseif (!preg_match('/[0-9]/', $password)) {
+        $pesan_error = "Password harus mengandung minimal 1 angka!";
+    } elseif (!preg_match('/[^A-Za-z0-9]/', $password)) {
+        $pesan_error = "Password harus mengandung minimal 1 simbol!";
     } elseif ($password !== $confirm) {
         $pesan_error = "Password tidak sama!";
     } else {
