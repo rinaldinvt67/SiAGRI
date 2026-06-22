@@ -157,7 +157,6 @@ $categories = mysqli_query($conn,
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php
     $page_title = 'Kelola Katalog';
     $extra_head = '';

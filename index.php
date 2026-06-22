@@ -19,7 +19,6 @@ if (isset($_SESSION['username'])) {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php
     $page_title = 'Sistem Informasi Agrikultur';
     $extra_head = '';

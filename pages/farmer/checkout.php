@@ -140,8 +140,6 @@ foreach ($kiosk_groups as $kg) {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-        <link rel="icon" type="image/png" href="../../assets/images/ICON.png">
     <?php $page_title = 'Checkout'; include '../../component/layout/head.php'; ?>
 </head>
 <body class="bg-gray-100 min-h-screen">
