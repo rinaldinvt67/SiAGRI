@@ -6,46 +6,76 @@ Transaction security is guaranteed through a **Manual Kiosk Verification (KYC)**
 
 ---
 
-## Team Members
-Rinaldi Noviyanto - Full Stack Dev
-Lalu Gede Janarung Ginawang Arkan - Front-End Developer & UI/UX Designer
-Fido Priasa Setyono Putra - System Analyst & QA Tester
+## Team Members & Responsibilities
+
+* **Rinaldi Noviyanto** (Backend Developer, Database, Tailwind CSS Setup, Chart.js Integration)
+* **Lalu Gede Janarung Ginawang Arkan** (Frontend Developer, UI/UX Design, Layout Templates, Interactive Components)
+* **Fido Priasa Setyono Putra** (System Analyst, QA Testing, Use Case flows, Policy Documentation)
 
 ---
 
-## Key Features & User Roles
+## Key Features by User Roles
 
-### 1. Farmer
-* **Secure Auth**: Sign up and login to a secure account with encrypted passwords.
-* **Product Catalog**: Browse, search, and filter the agricultural product catalog via a premium, responsive interface.
-* **Click & Collect Ordering**: Book products online and pick them up directly from the physical kiosk.
-* **Centralized Escrow**: Upload transfer payment proofs to the Admin's centralized escrow account prior to picking up items.
-* **Pickup OTP Code**: Receive a unique pickup OTP once the payment proof is verified by the Admin to present to the kiosk during physical retrieval.
-* **Community Forum**: Ask questions and participate in discussions in the community agricultural forum.
+### 1. Farmer (Customer)
+* **Secure Auth**: Sign up and login with secure session storage and encrypted passwords.
+* **Interactive Marketplace Catalog**: Browse, search, and filter agricultural products by categories (Fertilizer, Seeds, Tools, Pesticides) with Price and HET indicator tags.
+* **Click & Collect Checkout**: Place orders online to immediately lock items' inventory stock. Pick up physical goods and pay cash at the kiosk location.
+* **Countdown Cancellation Timer**: Automatic 24-hour order expiration. If items are not collected, the order is cancelled, and inventory returns to stock.
+* **Direct Kiosk Communication**: Click to initiate a pre-filled WhatsApp chat with the specific Kiosk owner for collection coordination.
+* **Community Forum Threading**: Create agronomy topics, read posts, post comments, and nested reply comments to engage with other farmers and consultants.
+* **Profile Management**: Update account parameters, password details.
 
 ### 2. Kiosk (Retailer)
-* **KYC Verification**: Upload legal business documents (NIB, SIUP, SPJB) for manual verification by the Admin to unlock store management.
-* **Performance Dashboard**: Access real-time sales statistics (active products, incoming orders, revenue) and interactive charts powered by Chart.js (7-Day Revenue Trends and Top Selling Products).
-* **Catalog Management (CRUD)**:
-  * Add and remove product items.
-  * Edit product details including Name, Category, Price, Stock, Subsidy/HET status, Description, and replace Product Images.
-* **Escrow Release**: Input the Farmer's OTP to validate the physical handover of goods and trigger fund disbursement.
+* **KYC Document Verification**: Upload legal business documents (NIB, SIUP, SPJB) for Admin review. Store features are locked until validated.
+* **Performance Dashboard**: Real-time sales statistics cards (Pending orders count, Active items, Revenue) alongside weekly Chart.js revenue charts.
+* **Catalog Management (CRUD)**: Create, read, update, and delete catalog items (Name, price, HET pricing, category, photo, stock level, description).
+* **Incoming Order Processing**: Track collection orders. Confirm incoming orders and mark as Completed upon cash handover.
 
 ### 3. Admin (System Controller)
-* **KYC Verification**: Review legal kiosk documents and approve/reject verified merchant status.
-* **Escrow Validator**: Verify farmer transfer receipts and activate pickup OTP codes.
-* **Expert Onboarding**: Manually register agricultural Expert accounts.
+* **KYC Approvals Module**: Review uploaded kiosk business documents, approve store verified statuses, or reject with administrator feedback notes.
+* **Category Control**: Add new product category types to the marketplace and delete unused options.
+* **User Accounts Monitor**: View registration details of all platform actors, and delete user accounts to enforce system rules.
+* **Expert Onboarding**: Manually register Expert Consultant credentials.
 
 ### 4. Expert (Consultant)
-* **Professional Consultation**: Answer queries, diagnose plant pests/diseases, and provide professional agronomic advice in the community forum.
+* **Pakar Discussion Board**: Provide professional agronomic advice and crop diagnosis inside the community forum.
+* **Verified Consultation Badge**: Replies are highlighted with an official "Pakar Pertanian" indicator tag to establish credibility.
 
 ---
 
 ## Tech Stack
 
-* **Front-End**: HTML5, Vanilla CSS (Premium Glassmorphism styling), Tailwind CSS, Chart.js (Dashboard visualizations).
-* **Back-End**: Native PHP (Semi-modular MVC-like architecture).
-* **Database**: MySQL.
+* **Front-End**: HTML5, CSS, Tailwind CSS, Chart.js
+* **Back-End**: Native PHP
+* **Database**: MySQL
+
+---
+
+## Web Sitemap & Role-Based Access
+
+The table below maps the web files inside [pages/] to sitemap routes and access rights:
+
+| File Path | Accessible To | Feature Description / Menu |
+| :--- | :--- | :--- |
+| [/index.php] | Public (Guest) | App Landing Page, statistics counters, and features description |
+| [/pages/auth/login.php] | Public (Guest) | Sign-in portal for all system roles |
+| [/pages/auth/register.php] | Public (Guest) | Account registration (supports Farmer and Kiosk roles) |
+| [/pages/auth/forgot-password.php] | Public (Guest) | Password recovery prompt page |
+| [/pages/general/profile.php] | Registered Users | Personal details update and password resets |
+| [/pages/farmer/catalog.php] | Farmer | Marketplace browsing, search, categories filters, and cart triggers |
+| [/pages/farmer/product-detail.php] | Farmer | Product specifics page, stock check, HET labels, and add-to-cart |
+| [/pages/farmer/checkout.php] | Farmer | Cart checkout screen, order groupings by kiosk, and click & collect submit |
+| [/pages/farmer/my-orders.php] | Farmer | Active orders status center (Pending, Confirmed, Completed, Cancelled) |
+| [/pages/farmer/forum.php] | Farmer, Expert | Agricultural discussions forum, comments feed, and nested replies |
+| [/pages/kiosk/dashboard.php] | Kiosk | Seller analytics dashboard with weekly sales charts |
+| [/pages/kiosk/kyc-upload.php] | Kiosk | Upload administrative files (NIB/SIUP) for verified status center |
+| [/pages/kiosk/manage-catalog.php] | Kiosk | Kiosk shop inventory CRUD center |
+| [/pages/kiosk/incoming-orders.php] | Kiosk | Processing queue for incoming collection orders |
+| [/pages/admin/dashboard.php] | Admin | KYC approval system, Category CRUD, Expert registration, User accounts management |
+| [/pages/general/privacy-policy.php] | All Roles | Privacy conditions statement (Indonesian) |
+| [/pages/general/privacy-policy-en.php] | All Roles | Privacy conditions statement (English) |
+| [/pages/general/terms-of-service-id.php] | All Roles | Terms and Conditions of service usage (Indonesian) |
+| [/pages/general/terms-of-service.php] | All Roles | Terms and Conditions of service usage (English) |
 
 ---
 
@@ -53,32 +83,118 @@ Fido Priasa Setyono Putra - System Analyst & QA Tester
 
 ```
 SiAGRI/
-├── assets/             # Static assets (CSS, JS, Images, Uploads)
-├── component/          # Shared layout components (Header, Footer, Navbar)
-├── config/             # Database configuration (koneksi.php)
-├── database/           # SQL database schema (siagri.sql)
-├── pages/              # Role-based user interface pages
-│   ├── admin/          # Admin dashboard & management
-│   ├── auth/           # Login, registration, and forgot password pages
-│   ├── farmer/         # Farmer catalog & checkout flow
-│   ├── general/        # Profile & Terms of Service documents
-│   └── kiosk/          # Kiosk dashboard & inventory management
-├── proses/             # Backend handler scripts (logout, cancel order)
-├── index.php           # Main entry point of the application
-├── package.json        # NPM dependencies and scripts configuration
-├── package-lock.json   # Locked versions of npm packages
-└── tailwind.config.js  # Tailwind CSS configuration file
+├── assets/                         # Static assets (CSS, JS, Images, Uploads)
+│   ├── css/                        # Stylesheets
+│   │   ├── global.css              # Core design styles and CSS custom properties
+│   │   ├── input.css               # Tailwind directive input file
+│   │   └── style.css               # Main stylesheet compiled/built from Tailwind
+│   ├── images/                     # Visual UI elements, logos, and illustration placeholders
+│   │   ├── ICON.png                # App favicon/icon
+│   │   ├── LOGO.png                # Main application logo
+│   │   ├── Placeholder-photo.png   # Default profile/item placeholder
+│   │   ├── sawah.jpg               # Rice field banner image
+│   │   └── Urea-Petro.jpg          # Sample product image
+│   ├── js/                         # Client-side script files
+│   │   ├── auth.js                 # Authentication handlers and validation
+│   │   ├── catalog.js              # Dynamic catalog rendering and filters
+│   │   ├── forum.js                # Community discussion board logic
+│   │   ├── main.js                 # Base JS, dynamic modals, responsive menus
+│   │   └── orders.js               # Checkout and order flow manager
+│   └── uploads/                    # Dynamic file uploads (ignored in version control)
+│       ├── kyc/                    # Verification documents (ID card uploads)
+│       └── products/               # Kiosk catalog product images
+├── component/                      # Reusable view components
+│   └── layout/                     # Site layout templates
+│       ├── footer.php              # Shared footer template
+│       ├── head.php                # Document head meta tags & asset loads
+│       └── navbar.php              # Shared responsive header and role-based navigation
+├── config/                         # Server configuration scripts
+│   └── koneksi.php                 # Database credentials & mysqli connection setup
+├── database/                       # Database schemas & seed data
+│   └── siagri.sql                  # Initial table layout and prefilled accounts script
+├── pages/                          # User interface routing files by role
+│   ├── admin/                      # Admin panel module
+│   │   └── dashboard.php           # Admin dashboard (users, catalogs, logs verification)
+│   ├── auth/                       # Sign-in/up views
+│   │   ├── forgot-password.php     # Password recovery prompt
+│   │   ├── login.php               # System user credentials entry
+│   │   └── register.php            # New farmer or kiosk account creation
+│   ├── farmer/                     # Farmer marketplace interface
+│   │   ├── catalog.php             # Main product browsing gallery
+│   │   ├── checkout.php            # Shopping cart checkout summary
+│   │   ├── forum.php               # Discussion & agronomy queries panel
+│   │   ├── my-orders.php           # Historical purchase tracking
+│   │   └── product-detail.php      # Detailed single item preview & specifications
+│   ├── general/                    # Shared system-wide views
+│   │   ├── privacy-policy.php      # Indonesian privacy rules policy
+│   │   ├── privacy-policy-en.php   # English version of privacy guidelines
+│   │   ├── profile.php             # Editable settings panel for registered users
+│   │   ├── terms-of-service.php    # English terms and conditions of usage
+│   │   └── terms-of-service-id.php # Indonesian translation of terms of service
+│   └── kiosk/                      # Seller kiosk module
+│       ├── dashboard.php           # Kiosk sales dashboard & statistics overview
+│       ├── incoming-orders.php     # Transaction requests processing queue
+│       ├── kyc-upload.php          # ID upload verification panel
+│       └── manage-catalog.php      # Add, edit, remove products panel
+├── proses/                         # Server-side transaction processing handlers
+│   ├── cancel-order.php            # Logic to handle user request to drop a transaction
+│   └── logout.php                  # Clear PHP session context and redirect
+├── index.php                       # Main portal entry point & root router
+├── package.json                    # NPM dependencies & task script configurations
+├── package-lock.json               # Dynamic version locked dependencies list
+└── tailwind.config.js              # Tailored styling presets of Tailwind utility compiler
 ```
 
 ---
 
 ## Installation & Database Import Guide
 
-Follow either of the two web server setup methods below to configure and run SiAGRI locally:
+### Quick Start Guide (Clone & Setup)
+
+Follow these initial steps to clone the repository, install styles watcher dependencies, and prepare the database:
+
+1. **Clone the Repository**
+   Open your command prompt or terminal and run:
+   ```bash
+   git clone https://github.com/rinaldinvt67/SiAGRI.git
+   cd SiAGRI
+   ```
+
+2. **Install Assets Compiler & Dev Server (Optional)**
+   If you plan to modify or recompile the Tailwind CSS layout styling:
+   ```bash
+   # Install developer styling utility packages
+   npm install
+
+   # Run styling compile-on-save watcher
+   npm run dev
+   ```
+
+3. **Configure Your Web Server Webroot**
+   Move or copy the cloned `SiAGRI` project directory to your local server's web root:
+   - For **Laragon**: copy folder to `C:\laragon\www\SiAGRI`
+   - For **XAMPP**: copy folder to `C:\xampp\htdocs\SiAGRI`
+
+4. **Initialize & Setup Database via MySQL CLI**
+   Instead of using phpMyAdmin, you can initialize and seed the database schemas directly using the terminal commands:
+   ```bash
+   # 1. Login to your MySQL server (defaults user root, password empty/prompt)
+   mysql -u root -p
+
+   # 2. Inside the MySQL prompt, create the database
+   CREATE DATABASE siagri;
+   EXIT;
+
+   # 3. Import and seed the sql dump file from the project database folder
+   mysql -u root -p siagri < database/siagri.sql
+   ```
+
+---
 
 ### Technical Prerequisites & Versions
 - **PHP**: Version 8.1 or higher (Recommended: 8.1.10+)
 - **MySQL**: Version 8.0 or higher (Recommended: 8.0.30+)
+- **Node.js** (Optional, for compiling styles): Version 16.0 or higher
 
 ---
 
@@ -95,12 +211,14 @@ Follow either of the two web server setup methods below to configure and run SiA
 3. Open your browser and navigate to **`http://localhost/phpmyadmin`** (or access database via Laragon database utility).
 4. Create a new database named **`siagri`**.
 5. Import the SQL file located in the project's database folder:
-   [database/siagri.sql](file:///C:/laragon/www/SiAGRI/database/siagri.sql)
-6. Ensure the database connection settings in [config/koneksi.php](file:///C:/laragon/www/SiAGRI/config/koneksi.php) match:
-   * **Host**: `localhost`
-   * **User**: `root`
-   * **Password**: `""` (empty string)
-   * **Database**: `siagri`
+   [SiAGRI/database/siagri.sql]
+6. Ensure the database connection settings in [SiAGRI/config/koneksi.php] match:
+   ```php
+   $host = "localhost";
+   $user = "root";
+   $password = "";
+   $database = "siagri";
+   ```
 
 #### How to Access via Browser:
 - Open your browser and navigate to: **`http://siagri.test/`**
@@ -121,12 +239,14 @@ Follow either of the two web server setup methods below to configure and run SiA
 3. Open your browser and navigate to **`http://localhost/phpmyadmin/`**.
 4. Create a new database named **`siagri`**.
 5. Import the SQL file located in the project's database folder:
-   [database/siagri.sql](file:///C:/xampp/htdocs/SiAGRI/database/siagri.sql)
-6. Ensure the database connection settings in [config/koneksi.php](file:///C:/xampp/htdocs/SiAGRI/config/koneksi.php) match:
-   * **Host**: `localhost`
-   * **User**: `root`
-   * **Password**: `""` (empty string)
-   * **Database**: `siagri`
+   [SiAGRI/database/siagri.sql]
+6. Ensure the database connection settings in [SiAGRI/config/koneksi.php] match:
+   ```php
+   $host = "localhost";
+   $user = "root";
+   $password = "";
+   $database = "siagri";
+   ```
 
 #### How to Access via Browser:
 - Open your browser and navigate to: **`http://localhost/SiAGRI/`**
@@ -144,46 +264,159 @@ Follow either of the two web server setup methods below to configure and run SiA
 
 ---
 
-## Database Schema Configuration
+## DBMS Table Specification
 
-The **`siagr_`** database structure contains the following tables:
+The database (default: `siagri`) schema contains **11 tables** with the following technical specifications:
 
-1. **`users`**
-   Stores user authentication credentials, email contacts, and role permissions.
-   * *Fields*: `user_id`, `username`, `email`, `password`, `role`.
+### 1. `users`
+Stores all account authentication data, emails, and roles.
 
-2. **`kiosk_profiles`**
-   Manages Kiosk store details, address locations, contact numbers, and KYC verification status.
-   * *Fields*: `kiosk_id`, `user_id`, `store_name`, `full_address`, `whatsapp_number`, `kyc_status`, `kyc_doc_path`, `kyc_note`, `verified_at`.
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `user_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique user identifier |
+| `username` | `varchar(50)` | UNIQUE | NO | *None* | Login username |
+| `email` | `varchar(100)` | UNIQUE | NO | *None* | Registered email address |
+| `password` | `varchar(255)` | - | NO | *None* | Hashed password |
+| `role` | `enum('Farmer','Kiosk','Expert','Admin')` | - | NO | *None* | User system authorization level |
 
-3. **`farmer_profiles`**
-   Stores farmer land sizes to determine eligible quotas for subsidized fertilizers.
-   * *Fields*: `farmer_id`, `user_id`, `total_land_area`, `land_area`.
+---
 
-4. **`expert_profiles`**
-   Contains agricultural expert details, bios, and whatsapp consultation contacts.
-   * *Fields*: `expert_id`, `user_id`, `full_name`, `specialization`, `whatsapp_number`, `expert_photo`.
+### 2. `kiosk_profiles`
+Manages kiosk store parameters, locations, and KYC verification status.
 
-5. **`categories`**
-   Categorization master list for store products (Subsidized Fertilizer, Seeds, Pesticides, etc.).
-   * *Fields*: `category_id`, `category_name`, `created_at`.
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `kiosk_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique kiosk identifier |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `store_name` | `varchar(100)` | - | NO | *None* | Commercial name of the agricultural store |
+| `full_address` | `varchar(300)` | - | NO | *None* | Physical pickup address details |
+| `whatsapp_number`| `varchar(20)` | - | NO | *None* | Phone contact for WhatsApp Click-to-Chat |
+| `kyc_status` | `enum('unverified','pending','verified','rejected')` | - | NO | `unverified` | Current KYC validation status |
+| `kyc_doc_path` | `varchar(255)` | - | YES | `NULL` | Relative path to uploaded PDF/Image document |
+| `kyc_note` | `varchar(500)` | - | YES | `NULL` | Rejection feedback from Admin |
+| `verified_at` | `datetime` | - | YES | `NULL` | Time stamp of KYC approval |
 
-6. **`products`**
-   Central product catalog containing pricing, inventory stock level, and subsidy/HET tags.
-   * *Fields*: `product_id`, `kiosk_id`, `category_id`, `product_name`, `description`, `product_image`, `selling_price`, `stock`, `is_subsidized`, `het_price`, `created_at`.
+---
 
-7. **`cart`**
-   Holds temporary shopping cart items for farmers before checkout.
-   * *Fields*: `cart_id`, `user_id`, `product_id`, `quantity`, `added_at`.
+### 3. `farmer_profiles`
+Stores agricultural farmer land details for subsidized purchase quota calculations.
 
-8. **`orders`**
-   Tracks escrow transactions and collection states.
-   * *Fields*: `order_id`, `user_id`, `kiosk_id`, `total_price`, `status`, `expired_at`, `created_at`.
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `farmer_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique farmer profile identifier |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `total_land_area`| `int` | - | NO | `0` | Calculated land size integer representation |
+| `land_area` | `decimal(10,2)`| - | NO | `0.00` | Land size representation in hectares |
 
-9. **`order_items`**
-   Stores details of products linked to each order transaction.
-   * *Fields*: `item_id`, `order_id`, `product_id`, `quantity`, `price`.
+---
 
-10. **`forum_discussions`**
-    Stores farmer discussion topics and pakar answers in the community forum.
-    * *Fields*: `forum_id`, `user_id`, `post_title`, `post_content`, `created_at`.
+### 4. `expert_profiles`
+Holds specialization details and contacts of agronomy Expert consultants.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `expert_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique expert profile identifier |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `full_name` | `varchar(100)` | - | NO | *None* | Display name of the agronomy expert |
+| `specialization`| `varchar(100)` | - | YES | `NULL` | Fields of expertise (e.g., Crop Pest Control) |
+| `whatsapp_number`| `varchar(20)` | - | YES | `NULL` | Public contact for farmer consulting |
+| `expert_photo` | `varchar(255)` | - | YES | `NULL` | File path to profile photo |
+
+---
+
+### 5. `categories`
+Product category master table.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `category_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique category identifier |
+| `category_name` | `varchar(100)` | UNIQUE | NO | *None* | Name (e.g. Pupuk Subsidi, Benih) |
+| `created_at` | `datetime` | - | YES | `CURRENT_TIMESTAMP` | Category creation timestamp |
+
+---
+
+### 6. `products`
+Central listing of catalog items offered by kiosks.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `product_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique product identifier |
+| `kiosk_id` | `int` | FK | NO | *None* | References `kiosk_profiles(kiosk_id)` ON DELETE CASCADE |
+| `category_id` | `int` | FK | NO | *None* | References `categories(category_id)` ON DELETE RESTRICT |
+| `product_name` | `varchar(150)` | - | NO | *None* | Display name of product |
+| `description` | `varchar(3000)`| - | YES | `NULL` | Item details, instructions, specifications |
+| `product_image` | `varchar(255)` | - | YES | `NULL` | Product photo file path |
+| `selling_price` | `decimal(15,2)`| - | NO | `0.00` | Catalog unit price |
+| `stock` | `int` | - | NO | `0` | Available quantity level in store |
+| `is_subsidized` | `enum('Yes','No')`| - | YES | `No` | Subsidized item tag flag |
+| `het_price` | `decimal(15,2)`| - | YES | `0.00` | Government HET (Harga Eceran Tertinggi) ceiling price |
+| `created_at` | `datetime` | - | YES | `CURRENT_TIMESTAMP` | Item registration timestamp |
+
+---
+
+### 7. `cart`
+Shopping cart storage for Farmer items pending checkout.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `cart_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique cart row identifier |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `product_id` | `int` | FK | NO | *None* | References `products(product_id)` ON DELETE CASCADE |
+| `quantity` | `int` | - | NO | `1` | Cart unit count |
+| `added_at` | `datetime` | - | YES | `CURRENT_TIMESTAMP` | Addition timestamp |
+| *Constraint* | `UNIQUE KEY` | - | - | - | Composite unique key on (`user_id`, `product_id`) |
+
+---
+
+### 8. `orders`
+Master sales records for Click & Collect transactions.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `order_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique order identifier |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `kiosk_id` | `int` | FK | NO | *None* | References `kiosk_profiles(kiosk_id)` ON DELETE CASCADE |
+| `total_price` | `decimal(15,2)`| - | NO | *None* | Total checkout price for this kiosk |
+| `status` | `enum('pending','confirmed','completed','cancelled')` | - | YES | `pending` | State: Pending collection, Confirmed by kiosk, Handed over, or Expired/Cancelled |
+| `expired_at` | `datetime` | - | NO | *None* | Deadline stamp for pickup (checkout time + 24 Hours) |
+| `created_at` | `datetime` | - | YES | `CURRENT_TIMESTAMP` | Order creation timestamp |
+
+---
+
+### 9. `order_items`
+Detailed lines detailing product counts in orders.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `item_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique order line identifier |
+| `order_id` | `int` | FK | NO | *None* | References `orders(order_id)` ON DELETE CASCADE |
+| `product_id` | `int` | FK | NO | *None* | References `products(product_id)` ON DELETE CASCADE |
+| `quantity` | `int` | - | NO | `1` | Quantity units purchased |
+| `price` | `decimal(15,2)`| - | NO | *None* | Snapped unit price at purchase time |
+
+---
+
+### 10. `forum_discussions`
+Discussion topics posted by farmers.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `forum_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique forum topic identifier |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `post_title` | `varchar(200)`| - | NO | *None* | Title of the discussion |
+| `post_content` | `varchar(10000)`| - | NO | *None* | Main message content |
+| `created_at` | `datetime` | - | YES | `CURRENT_TIMESTAMP` | Topic creation timestamp |
+
+---
+
+### 11. `forum_comments`
+Nested comment reply rows associated with forum discussions.
+
+| Column | Type | Key | Null | Default | Description |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| `comment_id` | `int` | PK | NO | *None (AUTO_INCREMENT)* | Unique comment identifier |
+| `forum_id` | `int` | FK | NO | *None* | References `forum_discussions(forum_id)` ON DELETE CASCADE |
+| `user_id` | `int` | FK | NO | *None* | References `users(user_id)` ON DELETE CASCADE |
+| `comment_content` | `text` | - | NO | *None* | Comment text message |
+| `parent_comment_id`| `int` | FK | YES | `NULL` | Self-referential comment reply reference (`forum_comments(comment_id)` ON DELETE CASCADE) |
+| `created_at` | `datetime` | - | YES | `CURRENT_TIMESTAMP` | Comment creation timestamp |
